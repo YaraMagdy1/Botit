@@ -126,6 +126,7 @@ public class Featured_Categories {
 
     public String getallfeaturesCategories() {
         System.out.println("hello");
+        //Hi Yara
         try {
             int i = 1;
             String Rightarrowstatus = driver.findElement(By.xpath("/html/body/div[6]/div/div[1]/div[2]/div[2]")).getAttribute("aria-disabled");
