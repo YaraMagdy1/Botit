@@ -110,7 +110,7 @@ public class Recently_Added_Brands {
     int CountOfVendorWebsite;
     public String Get_All_Name_Of_Vendors() {
         try {
-                for (int i = 1; i <= 10; i++) {
+                for (int i=1; i <= 10; i++) {
                     WebElement VendorElement = driver.findElement(By.xpath("/html/body/div[8]/div/div[2]/div/div/div[" + i + "]/div[2]/div[1]"));
                     if(i != 6){
                     String VendorName = VendorElement.getText();

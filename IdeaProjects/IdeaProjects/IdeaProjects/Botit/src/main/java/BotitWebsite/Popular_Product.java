@@ -54,26 +54,25 @@ public class Popular_Product {
     public Popular_Product(WebDriver driver) {
         this.driver = driver;
     }
-   /* public String GetCountOfPopularProduct() {
+    public String GetCountOfPopularProduct() {
         String Count = "";
         int i = 1;
         try {
             while (i != 11) {
-                WebElement product = driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li["+i+"]/div[2]/h2/a"));
+                WebElement product = driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li["+ i +"]/div[2]/h2"));
                 Product_Name = product.getText();
                 Get_Popular_Products.add(Product_Name);
-                WebElement Productcount = driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li[" + i + " ]"));
+                WebElement Productcount = driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li["+ i +"]/div[2]/h2"));
                 Product_Count = Productcount.getText();
                 Get_Popular_products_count.add(Product_Count);
                 Get_Popular_products_count.size();
                 i++;
             }
-            return String.valueOf(Get_Popular_products_count.size());
         } catch (Exception e) {
             System.out.println(e);
         }
-        return null;
-    }*/
+        return String.valueOf(Get_Popular_products_count.size());
+    }
     public String GetAllPopularProducts() {
         try {
             for (int i = 1; i <= 10; i++) {
@@ -87,6 +86,7 @@ public class Popular_Product {
         return null;
     }
     public String VerifyItemsInDB() {
+        GetCountOfPopularProduct();
         try {
             MongoCollection<Document> collection1 = database.getCollection("Items");
             for (int j = 0; j < 10; j++) {
@@ -111,6 +111,7 @@ public class Popular_Product {
     }
     public String InstockItems() {
         String InstockStatus = "";
+        GetCountOfPopularProduct();
         CheckItemAvailability();
         try {
             for (int i = 0; i < 10; i++) {
@@ -142,6 +143,7 @@ public class Popular_Product {
         return "true";
     }
     public String CheckItemAvailability() {
+        GetCountOfPopularProduct();
 
         try {
             for (int i = 0; i < 10; i++) {
@@ -287,6 +289,7 @@ public class Popular_Product {
     }
 
     public void CheckItemPrice() {
+        InstockItems();
         try {
             MongoCollection<Document> collection1 = database.getCollection("Items");
             for (int j = 0; j < 10; j++) {
@@ -330,6 +333,7 @@ public class Popular_Product {
                     .first();
             if (doc1 != null) {
                 int Price = (int) doc1.get("price");
+
                 Document discount = (Document) doc1.get("discount");
                 String PercentageOfDiscount = discount.get("value").toString();
                 int s = 100 - Integer.parseInt(PercentageOfDiscount.intern());
