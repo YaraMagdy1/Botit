@@ -30,4 +30,9 @@ public class Vendor_Details {
        }
         return String.valueOf(Related_Items_Website);
     }
+    public String GetTitleOfVendor() {
+            WebElement VendorNameElement = driver.findElement(By.xpath("/html/body/div[2]/div/div/div[1]/div[1]/h2"));
+            String VendorName = VendorNameElement.getText();
+            return VendorName;
+    }
 }

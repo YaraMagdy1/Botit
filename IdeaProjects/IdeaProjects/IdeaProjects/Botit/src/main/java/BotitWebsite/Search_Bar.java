@@ -1,90 +1,164 @@
-/*package BotitWebsite;
+package BotitWebsite;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.apache.commons.math3.analysis.solvers.BrentSolver;
+import com.google.common.collect.Iterators;
+import com.mongodb.client.*;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.bson.Document;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ISelect;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static java.lang.Thread.enumerate;
+import static java.lang.Thread.sleep;
 
 public class Search_Bar {
     WebDriver driver;
-    MongoClient mongoClient = MongoClients.create("mongodb+srv://transmission_dev:K1IPfykYMq6FAUv6@botit-dev.jwtve.mongodb.net/botitdev?retryWrites=true&w=majority");
-    MongoDatabase database = mongoClient.getDatabase("botitdev");
-    ArrayList<String> Find_Searched_Vendor = new ArrayList<>();
-    ArrayList<String> Not_Find_Searched_Product = new ArrayList<>();
-    ArrayList<String> Find_Searched_Product = new ArrayList<>();
-    ArrayList<String> Not_Find_Searched_Vendor = new ArrayList<>();
-    ArrayList<String> Count_Of_Products=new ArrayList<>();
-    ArrayList<String> Count_Of_Vendors=new ArrayList<>();
+
+    ArrayList<String> Count_Of_Products = new ArrayList<>();
+    ArrayList<String> Count_Of_Vendors = new ArrayList<>();
+
     public Search_Bar(WebDriver driver) {
         this.driver = driver;
     }
-    public void  CountForSearchProducts() {
+
+
+    public void CountForSearchProducts() {
         int counter = 1;
         for (int i = 1; i <= counter; i++) {
             try {
-                WebElement ProductNameElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/ul/li["+ i +"]/div[2]/h2/a"));
+                WebElement ProductNameElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/ul/li[" + i + "]/div[2]/h2/a"));
                 if (ProductNameElement.isDisplayed()) {
                     String ProductName = ProductNameElement.getText();
                     Count_Of_Products.add(ProductName);
                     counter += 1;
                 }
             } catch (Exception e) {
-                System.out.println("Finished looping for all Products");
+                System.out.println(e);
             }
         }
     }
-    public String SearchForExistProduct(String Product_Name) {
-        CountForSearchProducts();
-        driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[1]/form/input")).sendKeys(Product_Name);
-        MongoCollection<Document> collection1 = database.getCollection("Items");
-        Document doc1 = collection1.find(eq("name.en", Product_Name)).first();
-        if (doc1 != null) {
-            //driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[1]/form/button")).click();
-            WebElement CheckTitleOfProductElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/h2"));
-            String CheckTitleOfProduct = CheckTitleOfProductElement.getText();
-            if (CheckTitleOfProduct == "Products") {
-                for (int i = 1; i < Count_Of_Products.size(); i++) {
-                    WebElement ProductNameElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/ul/li[" + i + "]/div[2]/h2"));
-                    String ProductName = ProductNameElement.getText();
-                    if (Product_Name.equals(ProductName)) {
-                        Find_Searched_Product.add(ProductName);
-                    } else {
-                        Not_Find_Searched_Product.add(ProductName);
-                    }
-                }
-            } else {
-                return "No result appear";
-            }
+
+    public Void SearchForEmptyValue() {
+        driver.findElement(By.xpath("/html/body/div[2]/div/form/div/label[2]")).click();
+        return null;
+    }
+
+    public String ClickOnExitButton() throws IOException {
+        String Product_Name = "hi";
+        WebElement EnterValue = driver.findElement(By.xpath("/html/body/div[2]/div/form/div/input"));
+        EnterValue.sendKeys(Product_Name);
+        driver.findElement(By.xpath("/html/body/div[2]/div/form/div/label[1]/span")).click();
+        if (EnterValue.equals("What are you looking for?")) {
+            return "The Search box is not empty after clicking on Exit btn";
         } else {
-            return "Item not found in DB";
+            return "The Search box is empty after clicking on Exit btn";
         }
-        return String.valueOf(Not_Find_Searched_Product);
     }
-    int i=1;
+
+    ArrayList<String> Find_Exist_Brand = new ArrayList<>();
+    ArrayList<String> Not_Found_Exist_Brand = new ArrayList<>();
+    ArrayList<String> Find_Exist_Item = new ArrayList<>();
+    ArrayList<String> Not_Found_Exist_Item = new ArrayList<>();
+    ArrayList<String> Not_Find_Common_Item_Barnd = new ArrayList<>();
+    ArrayList<String> Find_Common_Item_Brand = new ArrayList<>();
+    MongoClient mongoClient = MongoClients.create("mongodb+srv://transmission_dev:K1IPfykYMq6FAUv6@botit-dev.jwtve.mongodb.net/botitdev?retryWrites=true&w=majority");
+    MongoDatabase database = mongoClient.getDatabase("botitdev");
+    public ArrayList<String> Search(String Input) {
+
+        driver.findElement(By.xpath("/html/body/div[2]/div/form/div/input")).sendKeys(Input);
+        MongoCollection<Document> collection1 = database.getCollection("Items");
+        FindIterable<Document> ItemDoc = collection1.find(eq("name.en/i", Input));
+        Iterator ItemSize = ItemDoc.iterator();
+        int SizeOfItemsDB = Iterators.size(ItemSize);
+
+        MongoCollection<Document> collection2 = database.getCollection("Vendors");
+        FindIterable<Document> VendorDoc = collection2.find(eq("name.en", Input));
+        Iterator VendorSize = VendorDoc.iterator();
+        int SizeOfVendorDB = Iterators.size(VendorSize);
+        //common Word
+        if (SizeOfItemsDB > 0 && SizeOfVendorDB > 0) {
+            //if (SizeOfItemsDB == Count_Of_Products.size()) {
+            //For check Item
+            for (int i = 1; i <= Count_Of_Products.size(); i++) {
+                WebElement ProductElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/ul/li[" + i + "]/div[2]/h2/a"));
+                String Product = ProductElement.getText();
+                if (Input.contains(Product)) {
+                    Find_Common_Item_Brand.add(Input);
+                } else {
+                    Not_Find_Common_Item_Barnd.add(Input);
+                }
+            }
+            //For Check Vendor
+            for (int j = 1; j <= Count_Of_Vendors.size(); j++) {
+                WebElement VendorElement = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + j + "]/div[2]/div[1]/h2/a"));
+                String Vendor = VendorElement.getText();
+                if (Input.contains(Vendor)) {
+                    Find_Common_Item_Brand.add(Input);
+                } else {
+                    Not_Find_Common_Item_Barnd.add(Input);
+                }
+            }
+            return Not_Find_Common_Item_Barnd;
+
+        } else if (SizeOfItemsDB > 0 && SizeOfVendorDB == 0) {
+            //if (SizeOfItemsDB == Count_Of_Products.size()) {
+            for (int i = 1; i <= Count_Of_Products.size(); i++) {
+                WebElement ProductNameElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/ul/li[" + i + "]/div[2]/h2"));
+                String ProductName = ProductNameElement.getText();
+                //Get_Items_Website.add(ProductName);
+                if (Input.equals(ProductName)) {
+                    Find_Exist_Item.add(Input);
+                } else {
+                    Not_Found_Exist_Item.add(Input);
+                }
+            }
+            return Not_Found_Exist_Item;
+            //  } else {
+            //  return "The number of appearing Items should be " + SizeOfItemsDB + " but it equals= " + Count_Of_Products.size();
+            //    }
+        } else if (SizeOfItemsDB == 0 && SizeOfVendorDB > 0) {
+            //  if (SizeOfVendorDB == Count_Of_Vendors.size()) {
+            for (int i = 1; i <= Count_Of_Vendors.size(); i++) {
+                WebElement VendorNameElement = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + i + "]/div[2]/div[1]/h2"));
+                String VendorName = VendorNameElement.getText();
+                //Get_Items_Website.add(ProductName);
+                if (Input.equals(VendorName)) {
+                    Find_Exist_Brand.add(Input);
+                } else {
+                    Not_Found_Exist_Brand.add(Input);
+                }
+            }
+            return Not_Found_Exist_Brand;
+        }
+        WebElement MessageElement = driver.findElement(By.xpath("/html/body/div[5]/div/div/p"));
+        String AlertMessage = MessageElement.getText();
+        if(AlertMessage.equals("No result found")){
+            UnExisted_Item_Brand.add(Input);
+        }else {
+            Find_UnExisted_Item_Brand.add(Input);
+            return Find_UnExisted_Item_Brand;
+        }
+        return null;
+    }
+    ArrayList<String> UnExisted_Item_Brand = new ArrayList<>();
+    ArrayList<String> Find_UnExisted_Item_Brand = new ArrayList<>();
+
     public void CountForSearchVendors() {
-       int counter = 1;
-        for (int i = 1; i <=counter; i++) {
+        int counter = 1;
+        for (int i = 1; i <= counter; i++) {
             //int i = 1;
-          //  List<WebElement> VendorNameElement = (List<WebElement>) driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + i + "]/div[2]/div[1]/h2"));
+            //  List<WebElement> VendorNameElement = (List<WebElement>) driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + i + "]/div[2]/div[1]/h2"));
             try {
                 WebElement VendorNameElement = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + i + "]/div[2]/div[1]/h2"));
 
@@ -94,23 +168,24 @@ public class Search_Bar {
                     Count_Of_Vendors.add(VendorName);
                     counter += 1;
                 }
-            }
-            catch (Exception e){
-                System.out.println("Finished looping for all vendors");
+            } catch (Exception e) {
+                System.out.println(e);
             }
         }
     }
-    /*public void readVendorsFromExcel() throws IOException {
+
+    String[][] Get_All_Products_Sheet;
+    int ArrayLengthOfProducts;
+
+    public String[][] ReadProductsFromExcel() throws IOException {
         XSSFRow row;
         XSSFCell cell;
         try {
-            //  FileInputStream file = new FileInputStream(new File("C:\\Users\\MO4\\Desktop\\BotitWebSite.xlsx"));
-            FileInputStream file = new FileInputStream(new File("C:\\Users\\admin\\Downloads\\BotitWebSite.xlsx"));
+            FileInputStream file = new FileInputStream(new File("C:\\Users\\admin\\Downloads\\FF6C6F00.xlsx"));
             XSSFWorkbook workbook = new XSSFWorkbook(file);
             // get sheet number
-
             int sheetCn = workbook.getNumberOfSheets();
-            for (int cn=0 ; cn < sheetCn; cn++) {
+            for (int cn = 0; cn < sheetCn; cn++) {
                 // get 0th sheet data
                 XSSFSheet sheet = workbook.getSheetAt(cn);
                 // get number of rows from sheet
@@ -118,155 +193,109 @@ public class Search_Bar {
                 // get number of cell from row
                 int cells = sheet.getRow(cn).getPhysicalNumberOfCells();
                 // value = new String[rows][cells];
-                GetAllSheet = new String[rows][cells];
+                Get_All_Products_Sheet = new String[rows][cells];
                 for (int r = 0; r < rows; r++) {
                     row = sheet.getRow(r); // bring row
                     if (row != null) {
                         for (int c = 0; c < cells; c++) {
                             cell = row.getCell(c);
-
                             if (cell != null) {
                                 // Process the cell value
                                 DataFormatter dataFormatter = new DataFormatter();
                                 String cellValue = dataFormatter.formatCellValue(cell);
-                                GetAllSheet[r][c] = cell.toString();
+                                Get_All_Products_Sheet[r][c] = cell.toString();
                             }
-
                         }
                     }
                 }
-
             }
-            ArrayLength = GetAllSheet.length;
         } catch (Exception e) {
             System.out.println(e);
         }
-    }*/
+        return Get_All_Products_Sheet;
+    }
 
-    public String SearchForExistVendor (String Vendor_Name) {
+    public BotitWebsite.Vendor_Details Vendor_Details;
+    public BotitWebsite.Featured_Categories Featured_Categories;
+    public BotitWebsite.Product_Details Product_Details;
+
+    public void ClickOnViewBtn() {
+        String StepName;
         CountForSearchVendors();
-        MongoCollection<Document> collection2 = database.getCollection("Vendors");
-        Document doc2 = collection2.find(eq("name.en", Vendor_Name)).first();
-        if (doc2 != null) {
-            //driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[1]/form/button")).click();
-            WebElement CheckTitleElement = driver.findElement(By.xpath("/html/body/div[3]/div/div[1]/div/h2"));
-            String CheckTitle = CheckTitleElement.getText();
-            if (CheckTitle.equals("Brands")) {
-                for (int i = 1; i <= Count_Of_Vendors.size(); i++) {
-                    WebElement VendorNameElement = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + i + "]/div[2]/div[1]/h2"));
-                    String VendorName = VendorNameElement.getText();
-                    if (Vendor_Name.equals(VendorName)) {
-                        Find_Searched_Vendor.add(VendorName);
-                    } else {
-                        Not_Find_Searched_Vendor.add(VendorName);
-                    }
-                }
+        for (int i = 1; i < Count_Of_Vendors.size(); i++) {
+            String NameOfVendor = Count_Of_Vendors.get(i);
+            driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + i + "]/div[2]/div[2]/a")).click();
+            String Title = Vendor_Details.GetTitleOfVendor();
+            if (NameOfVendor == Title) {
+                StepName = "Step1 Right Navigate with Matched Vendor";
+                Featured_Categories.Screenshot(StepName);
+                driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
             } else {
-                return "No Vendors returned in search result but the vendors is exsited";
+                StepName = "Step1 Not Matched Vendor";
+                Featured_Categories.Screenshot(StepName);
+                driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
             }
-            return "Exist Vendor Not found in DB";
         }
-        return String.valueOf(Not_Find_Searched_Vendor);
     }
-    ArrayList<String> Matched_Common_Product = new ArrayList<>();
-    ArrayList<String> Matched_Common_Vendor = new ArrayList<>();
-    ArrayList<String> Not_Matched_Common_Product = new ArrayList<>();
-    ArrayList<String> Not_Matched_Common_Vendor = new ArrayList<>();
 
-    public String SearchForCommonName(String Common_Name) {
-        CountForSearchVendors();
+    public void ClickOnViewItemBtn() {
+        String StepName;
         CountForSearchProducts();
-        driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[1]/form/input")).sendKeys(Common_Name);
-        MongoCollection<Document> collection1 = database.getCollection("Items");
-        Document doc1 = collection1.find(eq("name.en", Common_Name)).first();
-        if (doc1 != null) {
-            driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[1]/form/button")).click();
-            WebElement CheckTitleOfProductElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/h2"));
-            String CheckTitleOfProduct = CheckTitleOfProductElement.getText();
-            if (CheckTitleOfProduct == "Products") {
-                for (int i = 1; i <= Count_Of_Products.size(); i++) {
-                    WebElement ProductNameElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/ul/li[" + i + "]/div[2]/h2"));
-                    String ProductName = ProductNameElement.getText();
-                    if (Common_Name.contains(ProductName)) {
-                        Matched_Common_Product.add(ProductName);
-                    } else {
-                        Not_Matched_Common_Product.add(ProductName);
+        for (int i = 1; i < Count_Of_Products.size(); i++) {
+            String NameOfProduct = Count_Of_Products.get(i);
+            driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/ul/li[" + i + "]/div[3]/div[2]/a")).click();
+            String TitleOfProduct = Product_Details.CheckTitleOfItem();
+            if (NameOfProduct.equals(TitleOfProduct)) {
+                StepName = "Step1 Right Navigate with Matched Product";
+                Featured_Categories.Screenshot(StepName);
+                driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/ul/li[1]/a")).click();
+            } else {
+                StepName = "Step1 Not Matched Product";
+                Featured_Categories.Screenshot(StepName);
+                driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/ul/li[1]/a")).click();
+            }
+        }
+    }
+
+    String[][] Get_All_Vendors_Sheet = null;
+    int ArrayLengthOfVendors;
+
+    public String[][] ReadVendorsFromExcel() throws IOException {
+        XSSFRow row;
+        XSSFCell cell;
+        try {
+            FileInputStream file = new FileInputStream(new File("C:\\Users\\admin\\Downloads\\BotitWebSite.xlsx"));
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            // get sheet number
+            int sheetCn = workbook.getNumberOfSheets();
+            for (int cn = 0; cn < sheetCn; cn++) {
+                // get 0th sheet data
+                XSSFSheet sheet = workbook.getSheetAt(cn);
+                // get number of rows from sheet
+                int rows = sheet.getPhysicalNumberOfRows();
+                // get number of cell from row
+                int cells = sheet.getRow(cn).getPhysicalNumberOfCells();
+                // value = new String[rows][cells];
+                Get_All_Vendors_Sheet = new String[rows][cells];
+                for (int r = 0; r < rows; r++) {
+                    row = sheet.getRow(r); // bring row
+                    if (row != null) {
+                        for (int c = 0; c < cells; c++) {
+                            cell = row.getCell(c);
+                            if (cell != null) {
+                                // Process the cell value
+                                DataFormatter dataFormatter = new DataFormatter();
+                                String cellValue = dataFormatter.formatCellValue(cell);
+                                Get_All_Vendors_Sheet[r][c] = cell.toString();
+                            }
+                        }
                     }
                 }
-            }else {
-                return "there is no products appeared";
             }
-        }else {
-            return "Product Not found in DB";
+            ArrayLengthOfVendors = Get_All_Vendors_Sheet.length;
+        } catch (Exception e) {
+            System.out.println(e);
         }
-        MongoCollection<Document> collection2 = database.getCollection("Vendors");
-        Document doc2 = collection1.find(eq("name.en", Common_Name)).first();
-        if (doc2 != null) {
-            for (int j = 1; i<=Count_Of_Vendors.size(); i++) {
-                WebElement CheckTitleOfProductElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/h2"));
-                String CheckTitleOfVendor = CheckTitleOfProductElement.getText();
-                if (CheckTitleOfVendor.equals("Brands")) {
-                    WebElement VendorNameElement = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + i + "]/div[2]/div[1]/h2"));
-                    String VendorName = VendorNameElement.getText();
-                    if (Common_Name.contains(VendorName)) {
-                        Matched_Common_Vendor.add(VendorName);
-                    } else {
-                        Not_Matched_Common_Vendor.add(VendorName);
-                    }
-                } else {
-                    return "No vendors appears";
-                }
-            }
-        }else {
-            return "Vendor not found in DB";
-        }
-        return Common_Name;
+        return Get_All_Vendors_Sheet;
     }
-    ArrayList<String> Not_Exsit_Products = new ArrayList<>();
-    ArrayList<String> Find_Exsit_Products = new ArrayList<>();
-    ArrayList<String> Not_Exsit_Vendors = new ArrayList<>();
-    ArrayList<String> Find_Exsit_Vendors = new ArrayList<>();
-
-    public String SearchForNotExsitProduct(String NotExsitProductName){
-        CountForSearchProducts();
-        CountForSearchVendors();
-        driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[1]/form/input")).sendKeys(NotExsitProductName);
-        MongoCollection<Document> collection1 = database.getCollection("Items");
-        Document doc1 = collection1.find(eq("name.en", NotExsitProductName)).first();
-        if (doc1.equals(null)){
-            for (int i=1 ; i<Count_Of_Products.size();i++){
-            WebElement ValidationMessageElement = driver.findElement(By.xpath("/html/body/div[5]/div/div/p"));
-            String ValidationMessage = ValidationMessageElement.getText();
-            if(ValidationMessage.equals("No result found")){
-                Not_Exsit_Products.add(NotExsitProductName);
-            }else{
-                Find_Exsit_Products.add(NotExsitProductName);
-            }
-            }
-        }else {
-            return "Not exist product is found in DB";
-        }
-            return String.valueOf(Find_Exsit_Products);
-    }
-    public String SearchForNotExsitVendors(String NotExsitVendorName){
-        CountForSearchVendors();
-        driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[1]/form/input")).sendKeys(NotExsitVendorName);
-        MongoCollection<Document> collection1 = database.getCollection("Items");
-        Document doc1 = collection1.find(eq("name.en", NotExsitVendorName)).first();
-        if (doc1.equals(null)){
-            for (int i=1 ; i<Count_Of_Vendors.size();i++){
-                WebElement ValidationMessageElement = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[11]/div[2]/div[1]/h2/a"));
-                String ValidationMessage = ValidationMessageElement.getText();
-                if(ValidationMessage.equals("No result found")){
-                    Not_Exsit_Vendors.add(NotExsitVendorName);
-                }else{
-                    Find_Exsit_Vendors.add(NotExsitVendorName);
-                }
-            }
-        }else {
-            return "Not exist product is found in DB";
-        }
-        return String.valueOf(Find_Exsit_Vendors);
-    }
-
-}*/
+}

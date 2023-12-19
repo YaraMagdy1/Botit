@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class RecentlyAddedBrands extends BaseWebsite {
+public class EW_4_RecentlyAddedBrands extends BaseWebsite {
     String StepName="";
     WebDriver driver;
 

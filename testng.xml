@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <test verbose="2" preserve-order="true" name="C:/Users/admin/Downloads/IdeaProjects1">
+        <classes>
+            <class name="BTT_817.SetWorkingHours">
+                <methods>
+                    <include name="ChooseRegularSchedule"/>
+                    <include name="SetRegularWorkingHours"/>
+                </methods>
+            </class>
+            <class name="BaseWebsite.AllureReports">
+                <methods>
+                    <include name="extentTest"/>
+                </methods>
+            </class>
+            <class name="BotitWebsite.EW_1_FeaturedCatgories">
+                <methods>
+                    <include name="CheckUIDesignAtDefaultCase"/>
+                    <include name="checkScrollingFunctionality"/>
+                    <include name="Categories"/>
+                </methods>
+            </class>
+            <class name="BotitWebsite.EW_3_PopularProduct">
+                <methods>
+                    <include name="CheckDesgin"/>
+                    <include name="CheckTheNavigation"/>
+                    <include name="CheckItemsAfterRefreshing"/>
+                    <include name="CheckRelatedVendors"/>
+                </methods>
+            </class>
+            <class name="BotitWebsite.EW_4_RecentlyAddedBrands">
+                <methods>
+                    <include name="DesignOfRecentlyAddedVendorsPage"/>
+                    <include name="CheckScrollingButtons"/>
+                    <include name="Check_Right_Navigate_After_Click_On_View_Product_Button"/>
+                    <include name="Check_Right_Navigate_After_Click_On_See_More"/>
+                </methods>
+            </class>
+            <class name="BotitWebsite.EW_5_Offers">
+                <methods>
+                    <include name="CheckUIDesignAtDefaultCase"/>
+                    <include name="test"/>
+                    <include name="CheckReflectionOnProduct_DetailsPage"/>
+                </methods>
+            </class>
+            <class name="BotitWebsite.EW_6_Search_Bar">
+
+            </class>
+            <class name="Catalog.ChangeItemPrice">
+                <methods>
+                    <include name="ChangeItemPrice"/>
+                </methods>
+            </class>
+            <class name="Orders.OrdersTestCount">
+                <methods>
+                    <include name="GetOrdersCount_Accepting_Successfully"/>
+                    <include name="GetOrdersCount_Pending_Successfully"/>
+                </methods>
+            </class>
+            <class name="ReadProductSheet.ValidateProductSheet">
+                <methods>
+                    <include name="readItemNameData"/>
+                    <include name="readItemCategory"/>
+                    <include name="ReadShoppingSubcategory"/>
+                    <include name="ReadLogisticSize"/>
+                </methods>
+            </class>
+            <class name="StockManagement.SearchByItem">
+                <methods>
+                    <include name="SearchByValidItem"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

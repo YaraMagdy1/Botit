@@ -71,7 +71,7 @@ public class Popular_Product {
         } catch (Exception e) {
             System.out.println(e);
         }
-        return String.valueOf(Get_Popular_products_count.size());
+        return null;
     }
     public String GetAllPopularProducts() {
         try {

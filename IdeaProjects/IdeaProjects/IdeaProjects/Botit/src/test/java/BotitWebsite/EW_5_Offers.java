@@ -1,18 +1,14 @@
 package BotitWebsite;
 
 import BaseWebsite.BaseWebsite;
-import jdk.internal.classfile.AnnotationValue;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.Test;
-import static org.testng.Assert.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.testng.Assert;
-import org.testng.asserts.SoftAssert;
 
-public class Offers_Test_Cases extends BaseWebsite {
+public class EW_5_Offers extends BaseWebsite {
     WebDriver driver;
     String StepName="";
 
