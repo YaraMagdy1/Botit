@@ -376,7 +376,7 @@ public class Offers {
         }
         return String.valueOf(Repeated_Items);
     }
-    public BotitWebsite.Featured_Categories Featured_Categories;
+    public BotitWebsite.Common_Methods Common_Methods;
     ArrayList<String> Valid_Matched_Items =new ArrayList<>();
     ArrayList<String> NotValid_Matched_Items =new ArrayList<>();
     public ArrayList<String> ClickOnViewItemButton(){
@@ -388,12 +388,12 @@ public class Offers {
            if(NameOfITem== Title){
                Valid_Matched_Items.add(NameOfITem);
                StepName="Step1 Right Navigate with Matched Items";
-               Featured_Categories.Screenshot(StepName);
+               Common_Methods.Screenshot(StepName);
                driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/ul/li[1]")).click();
            }else {
                NotValid_Matched_Items.add(NameOfITem);
                StepName="Step1 Not Matched Items";
-               Featured_Categories.Screenshot(StepName);
+               Common_Methods.Screenshot(StepName);
                driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/ul/li[1]")).click();
            }
        }

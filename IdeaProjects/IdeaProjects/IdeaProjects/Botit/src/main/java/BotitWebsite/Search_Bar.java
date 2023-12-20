@@ -1,5 +1,6 @@
 package BotitWebsite;
 
+import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.google.common.collect.Iterators;
 import com.mongodb.client.*;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -9,20 +10,21 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.bson.Document;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ISelect;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Locale;
 
 import static com.mongodb.client.model.Filters.eq;
-import static java.lang.Thread.enumerate;
 import static java.lang.Thread.sleep;
+import static jdk.internal.org.jline.keymap.KeyMap.translate;
 
-public class Search_Bar {
+public class Search_Bar extends Common_Methods {
+
+
     WebDriver driver;
 
     ArrayList<String> Count_Of_Products = new ArrayList<>();
@@ -31,7 +33,6 @@ public class Search_Bar {
     public Search_Bar(WebDriver driver) {
         this.driver = driver;
     }
-
 
     public void CountForSearchProducts() {
         int counter = 1;
@@ -50,6 +51,7 @@ public class Search_Bar {
     }
 
     public Void SearchForEmptyValue() {
+
         driver.findElement(By.xpath("/html/body/div[2]/div/form/div/label[2]")).click();
         return null;
     }
@@ -74,13 +76,20 @@ public class Search_Bar {
     ArrayList<String> Find_Common_Item_Brand = new ArrayList<>();
     MongoClient mongoClient = MongoClients.create("mongodb+srv://transmission_dev:K1IPfykYMq6FAUv6@botit-dev.jwtve.mongodb.net/botitdev?retryWrites=true&w=majority");
     MongoDatabase database = mongoClient.getDatabase("botitdev");
+
     public ArrayList<String> Search(String Input) {
 
         driver.findElement(By.xpath("/html/body/div[2]/div/form/div/input")).sendKeys(Input);
         MongoCollection<Document> collection1 = database.getCollection("Items");
-        FindIterable<Document> ItemDoc = collection1.find(eq("name.en/i", Input));
+        //String n=translate(Input);
+        //FindIterable<Document> ItemDoc = collection1.find(eq("name.en",Input));
+        FindIterable<Document>ItemDoc =collection1.find(eq("nam.en",Input));
         Iterator ItemSize = ItemDoc.iterator();
         int SizeOfItemsDB = Iterators.size(ItemSize);
+        collection1.find(eq("nam.en",Input));
+        //collection1.find(eq("nam.en",Input.toUpperCase()));
+        Iterator ItemSize2 = ItemDoc.iterator();
+        int SizeOfItemsDB2 = Iterators.size(ItemSize);
 
         MongoCollection<Document> collection2 = database.getCollection("Vendors");
         FindIterable<Document> VendorDoc = collection2.find(eq("name.en", Input));
@@ -153,7 +162,6 @@ public class Search_Bar {
     }
     ArrayList<String> UnExisted_Item_Brand = new ArrayList<>();
     ArrayList<String> Find_UnExisted_Item_Brand = new ArrayList<>();
-
     public void CountForSearchVendors() {
         int counter = 1;
         for (int i = 1; i <= counter; i++) {
@@ -173,10 +181,7 @@ public class Search_Bar {
             }
         }
     }
-
     String[][] Get_All_Products_Sheet;
-    int ArrayLengthOfProducts;
-
     public String[][] ReadProductsFromExcel() throws IOException {
         XSSFRow row;
         XSSFCell cell;
@@ -218,7 +223,7 @@ public class Search_Bar {
     public BotitWebsite.Vendor_Details Vendor_Details;
     public BotitWebsite.Featured_Categories Featured_Categories;
     public BotitWebsite.Product_Details Product_Details;
-
+    public Common_Methods Common_Methods;
     public void ClickOnViewBtn() {
         String StepName;
         CountForSearchVendors();
@@ -228,11 +233,11 @@ public class Search_Bar {
             String Title = Vendor_Details.GetTitleOfVendor();
             if (NameOfVendor == Title) {
                 StepName = "Step1 Right Navigate with Matched Vendor";
-                Featured_Categories.Screenshot(StepName);
+                Common_Methods.Screenshot(StepName);
                 driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
             } else {
                 StepName = "Step1 Not Matched Vendor";
-                Featured_Categories.Screenshot(StepName);
+                Common_Methods.Screenshot(StepName);
                 driver.findElement(By.xpath("/html/body/div[1]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
             }
         }
@@ -247,11 +252,11 @@ public class Search_Bar {
             String TitleOfProduct = Product_Details.CheckTitleOfItem();
             if (NameOfProduct.equals(TitleOfProduct)) {
                 StepName = "Step1 Right Navigate with Matched Product";
-                Featured_Categories.Screenshot(StepName);
+                Common_Methods.Screenshot(StepName);
                 driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/ul/li[1]/a")).click();
             } else {
                 StepName = "Step1 Not Matched Product";
-                Featured_Categories.Screenshot(StepName);
+                Common_Methods.Screenshot(StepName);
                 driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/ul/li[1]/a")).click();
             }
         }

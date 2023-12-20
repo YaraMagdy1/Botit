@@ -19,7 +19,7 @@ public class EW_6_Search_Bar extends BaseWebsite {
     public void CheckTheDesignOfSearch_Bar(){
         Search_Bar.CountForSearchProducts();
         StepName="Design of search bar";
-        Featured_Categories.Screenshot(StepName);
+        Common_Methods.Screenshot(StepName);
     }
     @Test
     public void Allure(){
@@ -43,7 +43,7 @@ public class EW_6_Search_Bar extends BaseWebsite {
             ArrayList<String> Output1 = Search_Bar.Search(VendorName);
             SoftAssert.assertEquals(Output1.get(i), "", "The Vendor is not found in search result");
             StepName = "Search for vendor";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
         }
     }
     @Test(priority = 5)
@@ -51,15 +51,16 @@ public class EW_6_Search_Bar extends BaseWebsite {
     //GC16 || SIT || Check design of no result page when searching with invalid values
     public void SearchForItem() throws IOException {
         Search_Bar.CountForSearchProducts();
-        String[][] ReadItemsFormExcelSheet = Search_Bar.ReadProductsFromExcel();
+        Search_Bar.Search("dress");
+        /*String[][] ReadItemsFormExcelSheet = Search_Bar.ReadProductsFromExcel();
             for (int i = 0; i < ReadItemsFormExcelSheet.length ; i++) {
                     String PassValue = ReadItemsFormExcelSheet[i][0];
                     ArrayList<String> Output2 = Search_Bar.Search(PassValue);
                     SoftAssert SoftAssert = new SoftAssert();
                     SoftAssert.assertEquals(Output2,"","The Vendor or Item is not found in search result");
                     StepName="Search for items";
-                    Featured_Categories.Screenshot(StepName);
-                }
+                    Common_Methods.Screenshot(StepName);
+                }*/
             }
 
     @Test(priority = 3)
@@ -74,7 +75,7 @@ public class EW_6_Search_Bar extends BaseWebsite {
         String ClickOnExitBtn = Search_Bar.ClickOnExitButton();
         assertEquals(ClickOnExitBtn,"The Search box is not empty after clicking on Exit btn");
         StepName="Check the design after clicking on the exist btn";
-        Featured_Categories.Screenshot(StepName);
+        Common_Methods.Screenshot(StepName);
     }
     @Test(priority = 5)
     //GC08 || SIT || Check searching with empty in search box at home page

@@ -14,7 +14,7 @@ public class EW_3_PopularProduct extends BaseWebsite {
         String result = Popular_Product.GetAllPopularProducts();
         Assert.assertEquals(result, null, "the total number of displaying items is not equal 10");
         StepName = "Check the design of Popular Product";
-        Featured_Categories.Screenshot(StepName);
+        Common_Methods.Screenshot(StepName);
     }
 
     @Test(priority = 2)
@@ -25,10 +25,10 @@ public class EW_3_PopularProduct extends BaseWebsite {
         if(RelatedItem == Popular_Product.NameOfFirstItem){
             Assert.assertEquals(RelatedItem,Popular_Product.NameOfFirstItem,"The title of item at the product Details page is not matched");
             StepName="The item name is matched at the product details page";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
         }else {
             StepName="The item name is not matched at the product details page";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
         }
     }
 
@@ -38,33 +38,33 @@ public class EW_3_PopularProduct extends BaseWebsite {
         String TotalNumberOfProducts = Popular_Product.RefreshingPage();
         Assert.assertEquals(TotalNumberOfProducts, "true", "The items isn't change after refreshing page");
         StepName = "Step1 (Items Not change after refreshing page)";
-        Featured_Categories.Screenshot(StepName);
+        Common_Methods.Screenshot(StepName);
 
         String Items_Not_Found_DB = Popular_Product.VerifyItemsInDB();
         Assert.assertEquals(Items_Not_Found_DB, "true", "Item is not founded in DB");
         StepName="Check Items in DB after refreshing page";
-        Featured_Categories.Screenshot(StepName);
+        Common_Methods.Screenshot(StepName);
 
         String Unsupported_And_OutOfStock_Items = Popular_Product.InstockItems();
         Assert.assertEquals(Unsupported_And_OutOfStock_Items, "true","items are not available and out of stock");
         StepName="Check in stock and availability items after refreshing page";
-        Featured_Categories.Screenshot(StepName);
+        Common_Methods.Screenshot(StepName);
 
         Product_Details ProductDetails= Popular_Product.ClickOnViewItemButton();
         String MatchedItem= ProductDetails.CheckTitleOfItem();
         if(MatchedItem == Product_Details.TitleOfItem){
             Assert.assertEquals(MatchedItem,Product_Details.TitleOfItem,"The Items is not matched after refreshing page");
             StepName = "Right navigate after refreshing page";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
         }else {
             StepName = "Wrong navigate after refreshing page";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
         }
 
         String CompareDiscountPrice = Popular_Product.ComperBetweenDiscountPrice();
         Assert.assertEquals(CompareDiscountPrice,"true","The discount price doesn't match with DB");
         StepName="Comparing between discounted items from DB and website";
-        Featured_Categories.Screenshot(StepName);
+        Common_Methods.Screenshot(StepName);
     }
 
     @Test(priority = 4)
@@ -73,6 +73,6 @@ public class EW_3_PopularProduct extends BaseWebsite {
         boolean ComparingVendorsName = Popular_Product.CompareVendorsName();
         Assert.assertEquals(ComparingVendorsName, true, "The vendors not related with item");
         StepName = "Step 1 (Check related Vendors)";
-        Featured_Categories.Screenshot(StepName);
+        Common_Methods.Screenshot(StepName);
     }
 }

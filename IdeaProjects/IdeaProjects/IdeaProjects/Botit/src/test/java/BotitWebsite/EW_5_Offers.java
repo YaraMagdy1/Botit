@@ -20,22 +20,22 @@ public class EW_5_Offers extends BaseWebsite {
         if(DefaultCase.contains("false")){
             Assert.assertEquals(DefaultCase,"false","The Right btn is not clickable at the default case");
             StepName="Check the design of the first page";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
 
             String SingleClickOnRightArrow = Offers.SingleClickOnRightArrow();
             Assert.assertEquals(SingleClickOnRightArrow,"true","Items are duplicated");
             StepName="Step 2 Check after Single click on right arrow";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
 
             String MultiClickOnRightArrow = Offers.MultiClickOnRightArrow();
             Assert.assertEquals(SingleClickOnRightArrow,"true","The Right button is not clickable");
             StepName="Step 3 Check After multi click on right button";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
 
         }else{
             Assert.assertEquals(DefaultCase,"Scrollable buttons are not available OR Items is Less than 3","The Right btn is not clickable at the default case");
             StepName="";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
         }
     }
     @Test(priority = 1)
@@ -53,13 +53,13 @@ public class EW_5_Offers extends BaseWebsite {
         String Percentage = Product_Details.CheckThePercentage();
         Assert.assertEquals(Percentage,Offers.Discount_Price_Website,"The Percentage of Items is not match at the Product details Page ");
         StepName="Step 2 Check after Single click on right arrow";
-        Featured_Categories.Screenshot(StepName);
+        Common_Methods.Screenshot(StepName);
         int i=1;
         Offers.GetDiscountItemsFromWebsite();
         if(Percentage.contains(Offers.Discount_Price_Website.get(i))){
             Assert.assertEquals(Percentage,Offers.Discount_Price_Website,"The Percentage of Items is not match at the Product details Page ");
             StepName="Step 2 Check after Single click on right arrow";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
         }
     }
     //@Test(priority = 3)
@@ -71,10 +71,10 @@ public class EW_5_Offers extends BaseWebsite {
         if(TitleOfPage == "Offers"){
             Assert.assertEquals(TitleOfPage,"Offers","The Navigate is not correct");
             StepName="Step 1 Click on see more btn";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
         }else {
             StepName="Step 1 Wrong navigate after clicking on the see more btn";
-            Featured_Categories.Screenshot(StepName);
+            Common_Methods.Screenshot(StepName);
         }
         ArrayList<String> MatchedItems= Offers_Page.ClickOnViewItemButton();
         Assert.assertEquals(MatchedItems,"", String.valueOf(Offers_Page.Not_Valid_Matched_Items));

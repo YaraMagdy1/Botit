@@ -18,7 +18,7 @@ public class Offers_Page {
     }
     public BotitWebsite.Offers Offers;
     public BotitWebsite.Product_Details Product_Details;
-    public BotitWebsite.Featured_Categories Featured_Categories;
+    public BotitWebsite.Common_Methods Common_Methods;
     ArrayList<String> Valid_Matched_Items =new ArrayList<>();
     ArrayList<String> Not_Valid_Matched_Items =new ArrayList<>();
     public ArrayList<String> ClickOnViewItemButton(){
@@ -31,12 +31,12 @@ public class Offers_Page {
             if(NameOfITem== Title){
                 Valid_Matched_Items.add(NameOfITem);
                 StepName="Step2 Right Navigate with Matched Items after clicking on see more btn";
-                Featured_Categories.Screenshot(StepName);
+                Common_Methods.Screenshot(StepName);
                 driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/ul/li[1]")).click();
             }else {
                 Not_Valid_Matched_Items.add(NameOfITem);
                 StepName="Step2 Not Matched Items After clicking on see more btn";
-                Featured_Categories.Screenshot(StepName);
+                Common_Methods.Screenshot(StepName);
                 driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/ul/li[1]")).click();
             }
         }

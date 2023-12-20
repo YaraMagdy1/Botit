@@ -16,6 +16,7 @@ public class Featured_Brands {
         String TitlePage= TitlePageElement.toString();
         return TitlePage;
     }
+
     String AllVendorsName = "";
     ArrayList<String> All_Vendors_Website = new ArrayList<>();
     public String RelatedItemsAtFeaturedPage() {
