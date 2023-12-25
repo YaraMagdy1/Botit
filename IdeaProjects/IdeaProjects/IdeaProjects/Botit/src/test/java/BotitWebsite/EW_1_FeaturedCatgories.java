@@ -24,7 +24,8 @@ public class EW_1_FeaturedCatgories extends BaseWebsite {
     //GC04 || SIT || Check when a category has no items
     //GC05 || SIT || Check the data returned in the featured categories section
     // GC06 || SIT || Check reflection on home when adding new category
-    public void CheckUIDesignAtDefaultCase() throws IOException {
+    public void CheckUIDesignAtDefaultCase() throws IOException, InterruptedException {
+        Common_Methods.scrolling("/html/body/div[6]/div/div[1]/div[1]/h2");
 
         SoftAssert SoftAssert= new SoftAssert();
 
@@ -39,7 +40,15 @@ public class EW_1_FeaturedCatgories extends BaseWebsite {
         ArrayList<String> CategNotFound = Featured_Categories.CheckDisplayingOfCategories();
         SoftAssert.assertNull(CategNotFound,"The count of displaying categories is not correct"+CategNotFound);
 
-        Featured_Categories.ValidateCategories_Items();
+       String [][]NotMatched= Featured_Categories.ValidateCategories_Items();
+        String[][] Categ1 = new String[Featured_Categories.NotMatched.length][2];
+        for (int k=0;k<NotMatched.length;k++){
+            if ( NotMatched[k][0] != null && !NotMatched[k][1].trim().isEmpty()) {
+                Categ1[k][0] = NotMatched[k][0];
+                Categ1[k][1] = NotMatched[k][1];
+            }
+        }
+
         String result = Arrays.deepToString(Featured_Categories.NotMatched);
         SoftAssert.assertEquals(result,"[null, null]","Categs not Matched "+result );//Check
         StepName = "EW1.Step3,4 for GC01 & Step1 for GC04 Step2,4 for GC05 (Check the Name of categories and The Count of Items";
@@ -84,10 +93,12 @@ public class EW_1_FeaturedCatgories extends BaseWebsite {
     public void ClickOnCategory() throws InterruptedException {
         SoftAssert SoftAssert = new SoftAssert();
         Shop_Sub_Category ClickOnCateg = Featured_Categories.ClickOnCategory();
+        Thread.sleep(1500);
         String ActualURL= Shop_Sub_Category.GetPageURL();
+        Common_Methods.scrolling("/html/body/div[6]/div/div[1]/div[1]/h2");
 
         if (ActualURL.contains(Featured_Categories.CategName)){
-            Thread.sleep(1000);
+            Thread.sleep(1500);
             Common_Methods.Screenshot("EW1.Step1 Right navigate with right URL");
         }else {
             Common_Methods.Screenshot("EW1.Step1 Wrong navigate with incorrect URL");

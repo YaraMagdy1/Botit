@@ -7,11 +7,14 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 public class Featured_Categories {
 
     private By Icon = By.xpath("//*[@id=\"swiper-wrapper-6050eb48510004729\"]/div[1]/a");
@@ -23,7 +26,7 @@ public class Featured_Categories {
 
     String Catgeory = "";
     Boolean result = true;
-    WebDriver driver;
+    static WebDriver driver;
     private CharacterIteratorWrapper cellIterator;
 
     public Featured_Categories(WebDriver driver) {
@@ -404,10 +407,12 @@ public class Featured_Categories {
     }
     // public BotitWebsite.Shop_Sub_Category Shop_Sub_Category;
     String CategName;
-    public Shop_Sub_Category ClickOnCategory() {
+    public Shop_Sub_Category ClickOnCategory() throws InterruptedException {
         for (int i = 1; i <= 2; i++) {
             CategName= driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div[" + i + "]/a")).toString();
+
             driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div[" + i + "]/a")).click();
+            Thread.sleep(1500);
             driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
         }
         return new Shop_Sub_Category(driver);

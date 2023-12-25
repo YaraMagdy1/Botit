@@ -28,11 +28,13 @@ public class BaseWebsite {
         driver = new ChromeDriver();
         driver.get("https://vendorbotit.com/botitwebsite/public/");
         driver.manage().window().maximize();
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        JavascriptExecutor executor = (JavascriptExecutor) driver;
-        executor.executeScript("window.scrollBy(0,2000)","");
+  //      JavascriptExecutor executor = (JavascriptExecutor) driver;
+    //    executor.executeScript("window.scrollBy(0,2000)","");
+        //executor.executeScript("arguments[0].scrollIntoView(true);",executor);
+
+        //((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", webElement);
         //Scroll down till the bottom of the page
-        js.executeScript("window.scrollBy(1,document.body.scrollHeight)");
+//        executor.executeScript("window.scrollBy(1,document.body.scrollHeight)");
         Common_Methods=new Common_Methods(driver);
         Featured_Categories = new Featured_Categories(driver);
         Popular_Product = new Popular_Product(driver);

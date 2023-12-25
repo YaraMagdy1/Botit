@@ -16,7 +16,8 @@ public class EW_5_Offers extends BaseWebsite {
     @Test(priority = 1)
     //GC01 || SIT || Check offers section design at home page
     //GC04 || SIT || Check design and components of offers page
-    public void CheckUIDesignAtDefaultCase() {
+    public void CheckUIDesignAtDefaultCase() throws InterruptedException {
+        Common_Methods.scrolling("/html/body/div[9]/div/div[1]/div[1]/h2");
         SoftAssert SoftAssert = new SoftAssert();
 
         String CheckTitle = Offers.TitleOfOfferSection();

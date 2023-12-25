@@ -11,7 +11,8 @@ public class EW_3_PopularProduct extends BaseWebsite {
 
     @Test(priority = 1)
     //GC01 || SIT || Check design for popular products section
-    public void CheckDesgin() {
+    public void CheckDesgin() throws InterruptedException {
+        Common_Methods.scrolling("/html/body/div[7]/div/div[1]/h2");
         SoftAssert SoftAssert =new SoftAssert();
 
         String CheckTilte = Popular_Product.GetTitleOfPopularProductSection();

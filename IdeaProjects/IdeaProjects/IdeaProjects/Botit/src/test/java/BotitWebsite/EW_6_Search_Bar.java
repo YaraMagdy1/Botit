@@ -16,7 +16,8 @@ public class EW_6_Search_Bar extends BaseWebsite {
     SoftAssert softAssert = new SoftAssert();
     @Test(priority = 1)
     //GC01 || SIT || Check position and design for Search Bar
-    public void CheckTheDesignOfSearch_Bar(){
+    public void CheckTheDesignOfSearch_Bar() throws InterruptedException {
+        Common_Methods.scrolling("/html/body/div[3]/div/a");
         Search_Bar.CountForSearchProducts();
         StepName="Design of search bar";
         Common_Methods.Screenshot(StepName);

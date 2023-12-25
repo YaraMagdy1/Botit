@@ -13,7 +13,7 @@ public class EW_4_RecentlyAddedBrands extends BaseWebsite {
     @Test(priority = 1)
     //GC01 || SIT || Check design for Recently Added Vendors Section
     public void DesignOfRecentlyAddedVendorsPage() throws InterruptedException {
-
+        Common_Methods.scrolling("/html/body/div[8]/div/div[1]/div[1]/h2");
         SoftAssert  SoftAssert =new SoftAssert();
 
        // String Tiltle = Recently_Added_Brands.GetTiltleOfRecentlySection();

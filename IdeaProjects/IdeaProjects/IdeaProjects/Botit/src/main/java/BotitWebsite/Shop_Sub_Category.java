@@ -11,8 +11,9 @@ public class Shop_Sub_Category {
     public Shop_Sub_Category(WebDriver driver){
         this.driver=driver;
     }
-        public String GetPageURL(){
+        public String GetPageURL() throws InterruptedException {
             String CurrenrURL = driver.getCurrentUrl();
+            Thread.sleep(2500);
             return CurrenrURL;
         }
 

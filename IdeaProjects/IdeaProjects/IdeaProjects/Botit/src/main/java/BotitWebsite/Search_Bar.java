@@ -1,6 +1,5 @@
 package BotitWebsite;
 
-import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.google.common.collect.Iterators;
 import com.mongodb.client.*;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -16,11 +15,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Locale;
 
 import static com.mongodb.client.model.Filters.eq;
 import static java.lang.Thread.sleep;
-import static jdk.internal.org.jline.keymap.KeyMap.translate;
 
 public class Search_Bar  {
 
@@ -50,10 +47,11 @@ public class Search_Bar  {
         }
     }
 
-    public Void SearchForEmptyValue() {
+    public String SearchForEmptyValue() {
 
         driver.findElement(By.xpath("/html/body/div[2]/div/form/div/label[2]")).click();
-        return null;
+        String Message=driver.findElement(By.xpath("/html/body/div[5]/div/div/p")).toString();
+        return Message;
     }
 
     public String ClickOnExitButton() throws IOException {
@@ -61,10 +59,10 @@ public class Search_Bar  {
         WebElement EnterValue = driver.findElement(By.xpath("/html/body/div[2]/div/form/div/input"));
         EnterValue.sendKeys(Product_Name);
         driver.findElement(By.xpath("/html/body/div[2]/div/form/div/label[1]/span")).click();
-        if (EnterValue.equals("What are you looking for?")) {
-            return "The Search box is not empty after clicking on Exit btn";
-        } else {
+        if (EnterValue.equals(null)){
             return "The Search box is empty after clicking on Exit btn";
+        } else {
+            return "The Search box is not empty after clicking on Exit btn";
         }
     }
 
@@ -76,18 +74,80 @@ public class Search_Bar  {
     ArrayList<String> Find_Common_Item_Brand = new ArrayList<>();
     MongoClient mongoClient = MongoClients.create("mongodb+srv://transmission_dev:K1IPfykYMq6FAUv6@botit-dev.jwtve.mongodb.net/botitdev?retryWrites=true&w=majority");
     MongoDatabase database = mongoClient.getDatabase("botitdev");
-
     public ArrayList<String> Search(String Input) {
+        CountForSearchProducts();
+
+        driver.findElement(By.xpath("/html/body/div[2]/div/form/div/input")).sendKeys(Input);
+        String BrandTitle = driver.findElement(By.xpath("/html/body/div[3]/div/div[1]/div/h2")).toString();
+        String ProductTitle = driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/h2")).toString();
+        //-----------Common search----------
+        if(BrandTitle != null && ProductTitle != null) {
+            for (int i = 1; i <= Count_Of_Products.size(); i++) {
+                WebElement ProductElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/ul/li[" + i + "]/div[2]/h2/a"));
+                String Product = ProductElement.getText();
+                if (Input.contains(Product)) {
+                    Find_Common_Item_Brand.add(Input);
+                } else {
+                    Not_Find_Common_Item_Barnd.add(Input);
+                }
+            }
+            for (int j = 1; j <= Count_Of_Vendors.size(); j++) {
+                WebElement VendorElement = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + j + "]/div[2]/div[1]/h2/a"));
+                String Vendor = VendorElement.getText();
+                if (Input.contains(Vendor)) {
+                    Find_Common_Item_Brand.add(Input);
+                } else {
+                    Not_Find_Common_Item_Barnd.add(Input);
+                }
+            }
+        }//------------Search For Item-------------
+        else if(ProductTitle != null && BrandTitle.equals(null)){
+            for (int i = 1; i <= Count_Of_Products.size(); i++) {
+                WebElement ProductNameElement = driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/ul/li[" + i + "]/div[2]/h2"));
+                String ProductName = ProductNameElement.getText();
+                //Get_Items_Website.add(ProductName);
+                if (Input.equals(ProductName)) {
+                    Find_Exist_Item.add(Input);
+                } else {
+                    Not_Found_Exist_Item.add(Input);
+                }
+            }
+            return Not_Found_Exist_Item;
+        }//----------Search For Vendor-------------
+        else if(ProductTitle.equals(null) && BrandTitle != null){
+            for (int i = 1; i <= Count_Of_Vendors.size(); i++) {
+                WebElement VendorNameElement = driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + i + "]/div[2]/div[1]/h2"));
+                String VendorName = VendorNameElement.getText();
+                //Get_Items_Website.add(ProductName);
+                if (Input.equals(VendorName)) {
+                    Find_Exist_Brand.add(Input);
+                } else {
+                    Not_Found_Exist_Brand.add(Input);
+                }
+            }
+            return Not_Found_Exist_Brand;
+        }//---------Search For Not Found Item and Vendor--------------
+        else if (ProductTitle.equals(null) && BrandTitle.equals(null)) {
+            WebElement MessageElement = driver.findElement(By.xpath("/html/body/div[5]/div/div/p"));
+            String AlertMessage = MessageElement.getText();
+            if(AlertMessage.equals("No result found")){
+            UnExisted_Item_Brand.add(Input);
+            }else {
+                Find_UnExisted_Item_Brand.add(Input);
+            }
+            return Find_UnExisted_Item_Brand;
+        }
+        return null;
+    }
+
+    /*public ArrayList<String> Search(String Input) {
 
         driver.findElement(By.xpath("/html/body/div[2]/div/form/div/input")).sendKeys(Input);
         MongoCollection<Document> collection1 = database.getCollection("Items");
-        //String n=translate(Input);
-        //FindIterable<Document> ItemDoc = collection1.find(eq("name.en",Input));
         FindIterable<Document>ItemDoc =collection1.find(eq("nam.en",Input));
         Iterator ItemSize = ItemDoc.iterator();
         int SizeOfItemsDB = Iterators.size(ItemSize);
         collection1.find(eq("nam.en",Input));
-        //collection1.find(eq("nam.en",Input.toUpperCase()));
         Iterator ItemSize2 = ItemDoc.iterator();
         int SizeOfItemsDB2 = Iterators.size(ItemSize);
 
@@ -159,7 +219,7 @@ public class Search_Bar  {
             return Find_UnExisted_Item_Brand;
         }
         return null;
-    }
+    }*/
     ArrayList<String> UnExisted_Item_Brand = new ArrayList<>();
     ArrayList<String> Find_UnExisted_Item_Brand = new ArrayList<>();
     public void CountForSearchVendors() {
@@ -242,7 +302,7 @@ public class Search_Bar  {
             }
         }
     }
-    public
+
     public void ClickOnViewItemBtn() {
         String StepName;
         CountForSearchProducts();
