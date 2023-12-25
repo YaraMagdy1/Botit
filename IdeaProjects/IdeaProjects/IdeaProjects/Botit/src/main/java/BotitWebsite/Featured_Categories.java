@@ -26,7 +26,6 @@ public class Featured_Categories {
     WebDriver driver;
     private CharacterIteratorWrapper cellIterator;
 
-
     public Featured_Categories(WebDriver driver) {
         this.driver = driver;
     }
@@ -135,7 +134,7 @@ public class Featured_Categories {
             }
 
         } catch (Exception e) {
-            System.out.println("All categories that are available added in the list");
+            // System.out.println("All categories that are available added in the list");
 
         }
 
@@ -143,10 +142,10 @@ public class Featured_Categories {
     }
 
     int ArraySizeOfCateg;
-    String[][] GetAllCategsAndCount = null;
+    String[][] GetAllCategsAndCount;
 
-    public void GetcountOfItem_Categories() {
-        //  String[][] GetAllCategsAndCount = null;
+    public int GetcountOfItem_Categories() {
+       // getallfeaturesCategories();
         GetAllCategsAndCount = new String[Get_Categories.size()][2];
         for (int r = 0; r < Get_Categories.size(); r++) {//Fot Rows (Name of categs)
             String CountNumber = "";
@@ -161,7 +160,7 @@ public class Featured_Categories {
                 }
             }
         }
-        ArraySizeOfCateg = GetAllCategsAndCount.length;
+        return GetAllCategsAndCount.length;
     }
 
     public String GetTheTitleOfCategorySection() {
@@ -214,34 +213,126 @@ public class Featured_Categories {
             System.out.println(e);
         }
     }
+    String[][] Categ_With_No_Items;
+    String[][] NotMatched;
+    String Category_Website ;
+    ArrayList<String> Categ_Website =new ArrayList<>();
 
     public String[][] ValidateCategories_Items() throws IOException {
-        //GetAllCategoriesAndCount();
-        //readCategoriesFromExcel();
+        CheckDisplayingOfCategories();
 
         String[][] IsMatch = new String[GetAllCategsAndCount.length][2];
-        String[][] NotMatched = new String[GetAllCategsAndCount.length][2];
+        NotMatched = new String[GetAllCategsAndCount.length][2];
         int x = 0;
         int y = 0;
+        int w = 0;
+        int q = 0;
+        int f=0;
+        try {
+            //while (Found_Categories != null) {
+                for (int i = 0; i < Found_Categories.length; i++) {
+                    //for (int j=0 ;j<2 ;j++){
+                    for (int a = 0; a < GetAllSheet.length; a++) {
+                        //int j=0;
+                        if(Found_Categories[i][0] != null) {
+                            if (Found_Categories[i][0].equals(GetAllSheet[a][0])) {
+                                if (Found_Categories[i][1].equals(GetAllSheet[a][1])) {
+                                    IsMatch[y][0] = Found_Categories[i][0].toString();
+                                    IsMatch[y][1] = Found_Categories[i][1].toString();
+                                    y++;
+                                    break;
 
-        for (int i = 0; i < GetAllCategsAndCount.length; i++) {
-
-            if (GetAllCategsAndCount[i][0].equals(GetAllSheet[i][0]) && GetAllCategsAndCount[i][1].equals(GetAllSheet[i][1])) {
-                IsMatch[y][0] = GetAllCategsAndCount[i][0].toString();
-                IsMatch[y][1] = GetAllCategsAndCount[i][1].toString();
-                y++;
-
-            } else {
-                NotMatched[x][0] = GetAllCategsAndCount[i][0];
-                NotMatched[x][1] = GetAllCategsAndCount[i][1];
-                x++;
-
+                                } else {
+                                    NotMatched[x][0] = Found_Categories[i][0];
+                                    NotMatched[x][1] = Found_Categories[i][1];
+                                    x++;
+                                    break;
+                                }
+                            } else if (f == (GetAllSheet.length) - 1) {
+                                Catgeory = GetAllSheet[i][0];
+                                Not_Found_Categories.add(Catgeory);
+                                continue;
+                            }
+                        }
+                    }
+                }
             }
+         catch (Exception e) {
+            System.out.println(e);
+        } return NotMatched;
+    }
+    ArrayList<String> Missing_Categories =new ArrayList<>();
+    ArrayList<String> GetAllCategWebsite = new ArrayList<>();
+    ArrayList<String> GetAllCategSheet = new ArrayList<>();
+    public String CheckDisplayingOfCatgeories() throws IOException {
+        GetcountOfItem_Categories();
+        readCategoriesFromExcel();
+        try {
+            if(GetAllCategsAndCount.length != GetAllSheet.length) {
+                for (int i = 0; i < GetAllCategsAndCount.length; i++) {
+                    GetAllCategWebsite.add(GetAllCategsAndCount[i][0]);
+                }
+                for (int j = 0; j < GetAllSheet.length; j++) {
+                    GetAllCategSheet.add(GetAllSheet[j][0]);
+                }
+                for (int x = 0; x < GetAllCategWebsite.size(); x++) {
+                    for (int y = 0; y < GetAllCategSheet.size(); y++) {
+                        if (GetAllCategWebsite.get(x).contains(GetAllCategSheet.get(y))) {
+                        } else {
+                            String MissingCateg = GetAllCategWebsite.get(x);
+                            Missing_Categories.add(MissingCateg);
 
+                        }
+                    }
+                }
+            }else {
+                return "true";
+            }
+        }catch (Exception e){
+            System.out.println(e);
         }
-        return NotMatched;
+        return String.valueOf(Missing_Categories);
     }
 
+    ArrayList<String> Not_Found_Categories = new ArrayList<String>();
+    String[][] Found_Categories;
+    ArrayList<String> SizeOfFoundCategory = new ArrayList<String>();
+
+    public ArrayList<String> CheckDisplayingOfCategories(){
+        int j=0;
+        int X=0;
+        Found_Categories=new String[GetAllSheet.length][2];
+        for (int i = 0; i < GetAllSheet.length; i++) {
+            for (X=0 ; X < Get_Categories.size(); X++) {
+                //readCategories.size()-1
+                if (Get_Categories.get(X).contains(GetAllSheet[i][0])) {
+                   WebElement CountVendorElement =driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div["+ (X + 1) +"]/a/p"));
+                    String CountVendor=CountVendorElement.getText();
+                    Found_Categories[j][0] = GetAllSheet[i][0];
+                    Found_Categories[j][1] =CountVendor;
+                    j++;
+
+                    break;
+                } else if (X == (Get_Categories.size() - 1)) {
+                    Catgeory = GetAllSheet[i][0];
+                    Not_Found_Categories.add(Catgeory);
+                    continue;
+                }
+            }
+        }
+        return Not_Found_Categories;
+    }
+    public String AllFoundCateg(){
+        CheckDisplayingOfCategories();
+        Found_Categories=new String[SizeOfFoundCategory.size()][2];
+        for (int i=0;i<SizeOfFoundCategory.size() ; i++){
+            WebElement CountVendorElement =driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div["+ (i + 1) +"]/a/p"));
+            String CountVendor=CountVendorElement.getText();
+            Found_Categories[i][0] = SizeOfFoundCategory.get(i);
+            Found_Categories[i][1] =CountVendor;
+        }
+        return null;
+    }
 
     public String CheckButtonAvailabilityDefault() {
         String RightArrowStatus = "";
@@ -253,9 +344,9 @@ public class Featured_Categories {
             LeftArrowStatus = driver.findElement(By.xpath("/html/body/div[6]/div/div[1]/div[2]/div[2]")).getAttribute("aria-disabled");
 
             if (RightArrowStatus.contains("false") && LeftArrowStatus.contains("true")) {
-                return RightArrowStatus;
-            } else {
                 return LeftArrowStatus;
+            } else {
+                return RightArrowStatus;
             }
         } else {
             return "Scrollable buttons are not available ";
@@ -317,21 +408,11 @@ public class Featured_Categories {
         for (int i = 1; i <= 2; i++) {
             CategName= driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div[" + i + "]/a")).toString();
             driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div[" + i + "]/a")).click();
+            driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
         }
         return new Shop_Sub_Category(driver);
     }
 }
-    /*public void PageNavigation (){
-        String expectedUrl = "file:///C:/Users/admin/Desktop/Botit/shop%20-vendor%20details%20.html";
-        WebDriver driver = new ChromeDriver();
-        driver.get(expectedUrl);
-        try{
-            if (expectedUrl.contains(driver.getCurrentUrl())){
-            System.out.println("Navigated to correct webpage");
-            }
-        } catch(Throwable pageNavigationError){
-            System.out.println("Didn't navigate to correct webpage");
-        }
-    }*/
+
 
 

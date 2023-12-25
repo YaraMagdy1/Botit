@@ -73,6 +73,10 @@ public class Popular_Product {
         }
         return null;
     }
+    public String GetTitleOfPopularProductSection(){
+        String TilteOfPopularProduct = driver.findElement(By.xpath("/html/body/div[7]/div/div[1]/h2")).toString();
+        return TilteOfPopularProduct;
+    }
     public String GetAllPopularProducts() {
         try {
             for (int i = 1; i <= 10; i++) {
@@ -181,7 +185,7 @@ public class Popular_Product {
     }
     public String RefreshingPage() {
         GetAllPopularProducts();
-        driver.get("file:///C:/Users/admin/Desktop/Botit/Index.html");
+        //driver.get("file:///C:/Users/admin/Desktop/Botit/Index.html");
         driver.navigate().refresh();
         try {
             for (int i = 0; i <10; i++) {
@@ -217,26 +221,26 @@ public class Popular_Product {
         return null;
     }
     public Product_Details ClickOnViewItemButton() {
-            driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li[1]/div[3]/div[2]/a")).click();
-            return new Product_Details(driver);
+        driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li[1]/div[3]/div[2]/a")).click();
+        // driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
+        return new Product_Details(driver);
     }
     String NameOfFirstItem="";
-     public String GetTheFirstItemName(){
+    public String GetTheFirstItemName(){
         // WebElement NameOfFirstItemElement = driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li[1]/div[2]/h2/a"));
-          WebElement NameOfFirstItemElement = driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li[1]/div[2]/h2"));
-         NameOfFirstItem = NameOfFirstItemElement.getText();
-         return NameOfFirstItem;
-         //html/body/div[7]/div/div[2]/ul/li[1]/div[2]/h2/a
-     }
+        WebElement NameOfFirstItemElement = driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li[1]/div[2]/h2"));
+        NameOfFirstItem = NameOfFirstItemElement.getText();
+        return NameOfFirstItem;
+    }
 
     public String GetAllVendorsName() {
         for (int i = 1; i <= 10; i++) {
-                WebElement Vendor = driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li[" + i+ "]/div[2]/span/a"));
-                VendorName = Vendor.getText();
-                Website_Vendors_Name.add(VendorName);
-            }
-            return String.valueOf(Website_Vendors_Name);
+            WebElement Vendor = driver.findElement(By.xpath("/html/body/div[7]/div/div[2]/ul/li[" + i+ "]/div[2]/span/a"));
+            VendorName = Vendor.getText();
+            Website_Vendors_Name.add(VendorName);
         }
+        return String.valueOf(Website_Vendors_Name);
+    }
     public String GetVendorsIdFromDB() {
         GetAllPopularProducts();
         GetAllVendorsName();
@@ -264,25 +268,25 @@ public class Popular_Product {
     public boolean CompareVendorsName(){
         GetVendorsIdFromDB();
         try {
-                   for (int i = 0; i < DB_Vendors_ID.size(); i++) {
-                        MongoCollection<Document> collection3 = database.getCollection("Vendors");
-                        VendorId = DB_Vendors_ID.get(i);
-                       Document doc2 = collection3.find(eq("_id", new ObjectId(VendorId)))
-                               .projection(new Document("name.en",1))
-                               .first();
-                        if (doc2 != null) {
-                            Document c = (Document) doc2.get("name");
-                            Vendors_Name = c.get("en").toString();
-                            DB_Vendors_Name.add(Vendors_Name);
-                        }
-                    }
-                    for (int y = 0; y < 10; y++) {
-                        if (DB_Vendors_Name.contains(Website_Vendors_Name.get(y))) {
-                        } else {
-                            return false;
-                        }
-                    }
-            } catch (Exception e) {
+            for (int i = 0; i < DB_Vendors_ID.size(); i++) {
+                MongoCollection<Document> collection3 = database.getCollection("Vendors");
+                VendorId = DB_Vendors_ID.get(i);
+                Document doc2 = collection3.find(eq("_id", new ObjectId(VendorId)))
+                        .projection(new Document("name.en",1))
+                        .first();
+                if (doc2 != null) {
+                    Document c = (Document) doc2.get("name");
+                    Vendors_Name = c.get("en").toString();
+                    DB_Vendors_Name.add(Vendors_Name);
+                }
+            }
+            for (int y = 0; y < 10; y++) {
+                if (DB_Vendors_Name.contains(Website_Vendors_Name.get(y))) {
+                } else {
+                    return false;
+                }
+            }
+        } catch (Exception e) {
             System.out.println(e);
         }
         return true;
@@ -300,7 +304,7 @@ public class Popular_Product {
                 if (doc1 != null) {
                     Document discount = (Document) doc1.get("discount");
 
-                  String GetActive = discount.get("active").toString();
+                    String GetActive = discount.get("active").toString();
                     String GetValue = discount.get("value").toString();
                     if(GetActive != "") {
                         //System.out.println(GetActive);

@@ -107,6 +107,10 @@ public class Recently_Added_Brands {
             return "vendors are less than or equal 5";
         }
     }
+    public String GetTiltleOfRecentlySection(){
+        String TilteOfRecentlySection = driver.findElement(By.xpath("/html/body/div[8]/div/div[1]/div[1]/h2")).toString();
+        return TilteOfRecentlySection;
+    }
     int CountOfVendorWebsite;
     public String Get_All_Name_Of_Vendors() {
         try {
@@ -156,9 +160,9 @@ public class Recently_Added_Brands {
         }
         return true;
     }
-    public Vendor_Details ClickOnViewProductButton(){
-        //get the vendor name
-        driver.findElement(By.xpath("/html/body/div[8]/div/div[2]/div/div/div[1]/div[2]/div[2]")).click();
+    public Vendor_Details ClickOnViewProductButton() throws InterruptedException {
+
+        driver.findElement(By.xpath("/html/body/div[8]/div/div[2]/div/div/div[2]/div[2]/div[2]/a")).click();
         return new Vendor_Details(driver);
     }
     public Featured_Brands ClickOnSeeMoreButton(){

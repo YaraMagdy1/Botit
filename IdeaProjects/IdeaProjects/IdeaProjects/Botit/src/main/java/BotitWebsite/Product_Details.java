@@ -16,15 +16,22 @@ public class Product_Details {
     String TitleOfItem="";
     ArrayList<String> Valid_Matched_Items =new ArrayList<>();
     public String CheckTitleOfItem() {
-        WebElement TitleOfItemElement = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div[2]/div[2]"));
+        WebElement TitleOfItemElement = driver.findElement(By.xpath("/html/body/div[5]/div/div[2]/div[2]/div[1]/h2"));
         TitleOfItem = TitleOfItemElement.getText();
+        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
         return TitleOfItem;
     }
-    public String CheckThePercentage(){
+    public String GetDiscountPrice() throws InterruptedException {
+        String DiscountPrice = driver.findElement(By.xpath("")).toString();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
+        return DiscountPrice;
+    }
+    public String CheckThePercentage() throws InterruptedException {
         WebElement PercentageElement = driver.findElement(By.xpath(""));
         String Percentage = PercentageElement.getText();
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
         return Percentage;
     }
-
-
 }

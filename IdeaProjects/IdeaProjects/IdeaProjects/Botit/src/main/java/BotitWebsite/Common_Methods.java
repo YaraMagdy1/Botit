@@ -20,7 +20,7 @@ import java.io.IOException;
 public class Common_Methods {
     WebDriver driver;
 
-    public Common_Methods() {
+    public Common_Methods(WebDriver driver) {
         this.driver=driver;
     }
     public void DB_Connection(){

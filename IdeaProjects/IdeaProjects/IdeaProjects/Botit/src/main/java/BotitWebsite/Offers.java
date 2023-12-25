@@ -89,9 +89,8 @@ public class Offers {
             String LeftArrow = driver.findElement(By.xpath("/html/body/div[9]/div/div[1]/div[2]/div[1]")).getAttribute("aria-disabled").toString();
             if (LeftArrow == "false") {
                 return "we reached to the last Item with gray displayed";
-
             }
-            return "true";
+            return "false";
         }
     }
         public String MultiClickOnLeftArrow() {
@@ -262,11 +261,13 @@ public class Offers {
         GetDiscountItemsFromWebsite();
         CalculateDiscount();
         for (int i = 0; i < Discount_Price_Website.size(); i++) {
+
             if (Discount_Price_Website.contains(Price_After_Discount_DB.get(i))) {
+                return true;
             } else {
                 return false;
             }
-            return true;
+
         }
         return true;
     }
@@ -379,11 +380,15 @@ public class Offers {
     public BotitWebsite.Common_Methods Common_Methods;
     ArrayList<String> Valid_Matched_Items =new ArrayList<>();
     ArrayList<String> NotValid_Matched_Items =new ArrayList<>();
-    public ArrayList<String> ClickOnViewItemButton(){
+    public String TitleOfOfferSection(){
+        String Title = driver.findElement(By.xpath("/html/body/div[9]/div/div[1]/div[1]/h2")).toString();
+        return Title;
+    }
+   /* public ArrayList<String> ClickOnViewItemButton(){
         String StepName;
-        for(int i=0 ; i< Name_OF_All_Items_Website.size(); i++) {
+        for(int i=1 ; i<= Name_OF_All_Items_Website.size(); i++) {
            String NameOfITem= Name_OF_All_Items_Website.get(i);
-           driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div[" + (i+1) + "]/div[2]/div[2]/div[2]")).click();
+           driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div["+i+"]/div[2]/div[2]/div[2]/a")).click();
            String Title= Product_Details.CheckTitleOfItem();
            if(NameOfITem== Title){
                Valid_Matched_Items.add(NameOfITem);
@@ -398,6 +403,16 @@ public class Offers {
            }
        }
         return NotValid_Matched_Items;
+    }*/
+   String ItemName;
+   String DiscountItme;
+    public Product_Details ClickOnViewBtn(){
+        for (int i=1 ; i<3 ; i++) {
+            ItemName = driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div["+i+"]/div[2]/div[1]/h2/a")).toString();
+            DiscountItme = driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div["+i+"]/div[2]/div[2]/div[1]/span")).toString();
+            driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div[" + i + "]/div[2]/div[2]/div[2]/a")).click();
+        }
+        return new Product_Details(driver);
     }
     public Product_Details ClickOnItemName (){
         driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div[2]/div[2]/div[1]/h2")).click();

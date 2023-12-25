@@ -22,7 +22,7 @@ import static com.mongodb.client.model.Filters.eq;
 import static java.lang.Thread.sleep;
 import static jdk.internal.org.jline.keymap.KeyMap.translate;
 
-public class Search_Bar extends Common_Methods {
+public class Search_Bar  {
 
 
     WebDriver driver;
@@ -224,13 +224,13 @@ public class Search_Bar extends Common_Methods {
     public BotitWebsite.Featured_Categories Featured_Categories;
     public BotitWebsite.Product_Details Product_Details;
     public Common_Methods Common_Methods;
-    public void ClickOnViewBtn() {
+    public void ClickOnViewBtn() throws InterruptedException {
         String StepName;
         CountForSearchVendors();
         for (int i = 1; i < Count_Of_Vendors.size(); i++) {
             String NameOfVendor = Count_Of_Vendors.get(i);
             driver.findElement(By.xpath("/html/body/div[3]/div/div[2]/ul/li[" + i + "]/div[2]/div[2]/a")).click();
-            String Title = Vendor_Details.GetTitleOfVendor();
+            String Title = Vendor_Details.TitleOfVendor();
             if (NameOfVendor == Title) {
                 StepName = "Step1 Right Navigate with Matched Vendor";
                 Common_Methods.Screenshot(StepName);
@@ -242,7 +242,7 @@ public class Search_Bar extends Common_Methods {
             }
         }
     }
-
+    public
     public void ClickOnViewItemBtn() {
         String StepName;
         CountForSearchProducts();

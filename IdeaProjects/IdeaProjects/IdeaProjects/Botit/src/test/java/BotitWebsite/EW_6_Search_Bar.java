@@ -50,9 +50,8 @@ public class EW_6_Search_Bar extends BaseWebsite {
     //GC11 || SIT || Check searching valid item name in search results page
     //GC16 || SIT || Check design of no result page when searching with invalid values
     public void SearchForItem() throws IOException {
-        Search_Bar.CountForSearchProducts();
-        Search_Bar.Search("dress");
-        /*String[][] ReadItemsFormExcelSheet = Search_Bar.ReadProductsFromExcel();
+
+        String[][] ReadItemsFormExcelSheet = Search_Bar.ReadProductsFromExcel();
             for (int i = 0; i < ReadItemsFormExcelSheet.length ; i++) {
                     String PassValue = ReadItemsFormExcelSheet[i][0];
                     ArrayList<String> Output2 = Search_Bar.Search(PassValue);
@@ -60,10 +59,11 @@ public class EW_6_Search_Bar extends BaseWebsite {
                     SoftAssert.assertEquals(Output2,"","The Vendor or Item is not found in search result");
                     StepName="Search for items";
                     Common_Methods.Screenshot(StepName);
-                }*/
+                }
+            softAssert.assertAll();
             }
 
-    @Test(priority = 3)
+    //@Test(priority = 3)
     //GC04 || SIT || Check if search is case sensitive or not
     public void CheckSeneitive(){
 
@@ -72,10 +72,13 @@ public class EW_6_Search_Bar extends BaseWebsite {
     //GC06 || SIT || Check if close button is shown and working when user wants to delete data from search bar
     //GC18 || SIT || Check if close button is shown and working in search result page
     public void CheckTheXbtn() throws IOException {
+
         String ClickOnExitBtn = Search_Bar.ClickOnExitButton();
-        assertEquals(ClickOnExitBtn,"The Search box is not empty after clicking on Exit btn");
+        SoftAssert SoftAssert=new SoftAssert();
+        SoftAssert.assertEquals(ClickOnExitBtn,"The Search box is not empty after clicking on Exit btn");
         StepName="Check the design after clicking on the exist btn";
         Common_Methods.Screenshot(StepName);
+        SoftAssert.assertAll();
     }
     @Test(priority = 5)
     //GC08 || SIT || Check searching with empty in search box at home page
@@ -85,7 +88,7 @@ public class EW_6_Search_Bar extends BaseWebsite {
     }
     @Test (priority = 6)
     //GC14 || SIT || Check "View Products" button in search results page
-    public void ClickOnViewProductBtn(){
+    public void ClickOnViewProductBtn() throws InterruptedException {
         Search_Bar.ClickOnViewBtn();
     }
     @Test (priority = 7)
