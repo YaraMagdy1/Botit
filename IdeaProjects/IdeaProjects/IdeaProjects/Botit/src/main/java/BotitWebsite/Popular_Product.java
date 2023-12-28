@@ -74,7 +74,8 @@ public class Popular_Product {
         return null;
     }
     public String GetTitleOfPopularProductSection(){
-        String TilteOfPopularProduct = driver.findElement(By.xpath("/html/body/div[7]/div/div[1]/h2")).toString();
+        WebElement TilteOfPopularProductElement = driver.findElement(By.xpath("/html/body/div[7]/div/div[1]/h2"));
+        String TilteOfPopularProduct=TilteOfPopularProductElement.getText();
         return TilteOfPopularProduct;
     }
     public String GetAllPopularProducts() {
@@ -165,12 +166,12 @@ public class Popular_Product {
                         if (z.size() != 0) {
                             String h = z.get(0).get("inStock").toString();
                             if (h == "true" || h == "[true]") {
-                                System.out.print("Item suppoed " + ItemName);
+                              //  System.out.print("Item suppoed " + ItemName);
                                 Supported_Items.add(ItemName);
                             }
                             else
                             {
-                                System.out.print("Items not supported " + ItemName);
+                                //System.out.print("Items not supported " + ItemName);
                                 UnSupported_Items.add(ItemName);
                             }
                         }

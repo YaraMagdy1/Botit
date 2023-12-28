@@ -11,17 +11,13 @@ public class Offers_Page {
     public Offers_Page(WebDriver driver){
         this.driver=driver;
     }
-    public String GetTitleOfPage(){
-       WebElement TitlePageElement= driver.findElement(By.xpath("/html/body/div[2]/div/div[2]"));
-       String TitlePage = TitlePageElement.getText();
-       return TitlePage;
-    }
+
     public BotitWebsite.Offers Offers;
     public BotitWebsite.Product_Details Product_Details;
     public BotitWebsite.Common_Methods Common_Methods;
     ArrayList<String> Valid_Matched_Items =new ArrayList<>();
     ArrayList<String> Not_Valid_Matched_Items =new ArrayList<>();
-    public ArrayList<String> ClickOnViewItemButton(){
+    public ArrayList<String> ClickOnViewItemButton() throws InterruptedException {
         Offers.GetAllNameOfItems();
         String StepName;
         for(int i=0 ; i< Offers.Name_OF_All_Items_Website.size(); i++) {

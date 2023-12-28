@@ -380,8 +380,10 @@ public class Offers {
     public BotitWebsite.Common_Methods Common_Methods;
     ArrayList<String> Valid_Matched_Items =new ArrayList<>();
     ArrayList<String> NotValid_Matched_Items =new ArrayList<>();
+    String Title;
     public String TitleOfOfferSection(){
-        String Title = driver.findElement(By.xpath("/html/body/div[9]/div/div[1]/div[1]/h2")).toString();
+        WebElement Titleelement = driver.findElement(By.xpath("/html/body/div[9]/div/div[1]/div[1]/h2"));
+        Title = Titleelement.getText();
         return Title;
     }
    /* public ArrayList<String> ClickOnViewItemButton(){
@@ -407,11 +409,13 @@ public class Offers {
    String ItemName;
    String DiscountItme;
     public Product_Details ClickOnViewBtn(){
-        for (int i=1 ; i<3 ; i++) {
-            ItemName = driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div["+i+"]/div[2]/div[1]/h2/a")).toString();
-            DiscountItme = driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div["+i+"]/div[2]/div[2]/div[1]/span")).toString();
-            driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div[" + i + "]/div[2]/div[2]/div[2]/a")).click();
-        }
+        //for (int i=1 ; i<3 ; i++) {
+            WebElement ItemNameElement = driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div[1]/div[2]/div[1]/h2/a"));
+            ItemName = ItemNameElement.getText();
+            WebElement DiscountItmeElement = driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div[1]/div[2]/div[2]/div[1]/span"));
+            DiscountItme = DiscountItmeElement.getText();
+            driver.findElement(By.xpath("/html/body/div[9]/div/div[2]/div[2]/div/div/div[1]/div[2]/div[2]/div[2]/a")).click();
+
         return new Product_Details(driver);
     }
     public Product_Details ClickOnItemName (){

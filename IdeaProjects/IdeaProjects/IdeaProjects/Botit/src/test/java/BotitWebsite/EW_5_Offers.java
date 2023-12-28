@@ -56,11 +56,17 @@ public class EW_5_Offers extends BaseWebsite {
         Product_Details ClickOnViewBtn = Offers.ClickOnViewBtn();
         String TitleOfItem = Product_Details.CheckTitleOfItem();
         String DisocuntPrice =Product_Details.GetDiscountPrice();
-        if(TitleOfItem.equals(Offers.ItemName) && DisocuntPrice.equals(Offers.DiscountItme)) {
-          Common_Methods.Screenshot("EW5 Step1 for GC03 Check Navigate after clicking on view btn");
+        if(TitleOfItem.equals(Offers.ItemName)){
+          Common_Methods.Screenshot("EW5 Step1 for GC03 Check Item Name after clicking on view btn");
         }else {
             SoftAssert.assertEquals(TitleOfItem, Offers.ItemName, "The Item name is not matched after clicking on View btn" + TitleOfItem);
+            Common_Methods.Screenshot("The title of item is not matched after clicking on tht view item btn");
+        }
+        if( DisocuntPrice.equals(Offers.DiscountItme)){
+            Common_Methods.Screenshot("EW5 Step1 for GC03 right info for Discount price after clicking on view btn");
+        }else {
             SoftAssert.assertEquals(DisocuntPrice, Offers.DiscountItme, "The Discount price is not matched after clicking on View btn" + TitleOfItem);
+            Common_Methods.Screenshot("EW5 Step1 for GC03 Wrong info for Discount price after clicking on view btn");
         }
        // String Percentage = Product_Details.CheckThePercentage();
         //SoftAssert.assertEquals(Percentage,Offers.Discount_Price_Website,"The Percentage of Items is not match at the Product details Page ");

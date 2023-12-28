@@ -15,6 +15,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class EW_1_FeaturedCatgories extends BaseWebsite {
+    static int c = 1;
     WebDriver driver;
     String StepName = "";
     String TestDefaultCase = "";
@@ -41,11 +42,11 @@ public class EW_1_FeaturedCatgories extends BaseWebsite {
         SoftAssert.assertNull(CategNotFound,"The count of displaying categories is not correct"+CategNotFound);
 
        String [][]NotMatched= Featured_Categories.ValidateCategories_Items();
-        String[][] Categ1 = new String[Featured_Categories.NotMatched.length][2];
+        //String[][] Categ1 = new String[Featured_Categories.NotMatched.length][2];
         for (int k=0;k<NotMatched.length;k++){
             if ( NotMatched[k][0] != null && !NotMatched[k][1].trim().isEmpty()) {
-                Categ1[k][0] = NotMatched[k][0];
-                Categ1[k][1] = NotMatched[k][1];
+
+                System.out.println(NotMatched[k][0].toString() + "," + NotMatched[k][1].toString());
             }
         }
 
@@ -60,7 +61,6 @@ public class EW_1_FeaturedCatgories extends BaseWebsite {
         Common_Methods.Screenshot(StepName);
 
         SoftAssert.assertAll("The Failed Assertion");
-
     }
    @Test(priority = 2)
     //GC02 || SIT || Check Scroll buttons of Featured Categories section

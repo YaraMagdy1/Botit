@@ -111,7 +111,7 @@ public class EW_4_RecentlyAddedBrands extends BaseWebsite {
             Common_Methods.Screenshot(StepName);
         }
 
-        Recently_Added_Brands.ClickOnSeeMoreButton();
+       // Recently_Added_Brands.ClickOnSeeMoreButton();
         String CheckVendors = Featured_Brands.RelatedItemsAtFeaturedPage();
         if(CheckVendors != null) {
 

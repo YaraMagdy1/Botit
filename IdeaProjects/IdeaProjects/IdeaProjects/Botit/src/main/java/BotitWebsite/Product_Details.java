@@ -15,15 +15,15 @@ public class Product_Details {
     }
     String TitleOfItem="";
     ArrayList<String> Valid_Matched_Items =new ArrayList<>();
-    public String CheckTitleOfItem() {
+    public String CheckTitleOfItem() throws InterruptedException {
         WebElement TitleOfItemElement = driver.findElement(By.xpath("/html/body/div[5]/div/div[2]/div[2]/div[1]/h2"));
         TitleOfItem = TitleOfItemElement.getText();
-        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
         return TitleOfItem;
     }
     public String GetDiscountPrice() throws InterruptedException {
-        String DiscountPrice = driver.findElement(By.xpath("")).toString();
-        Thread.sleep(1000);
+        WebElement DiscountPriceElement = driver.findElement(By.xpath("/html/body/div[5]/div/div[2]/div[2]/div[2]/span"));
+        String DiscountPrice = DiscountPriceElement.getText();
+        Thread.sleep(2500);
         driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
         return DiscountPrice;
     }
