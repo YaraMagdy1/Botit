@@ -36,6 +36,7 @@ public class PS_16_PromoCode  {
         pageLoginPromo.login();
         pagePromoCode.promoNav();
         pagePromoCode.clickOnSpaceArea();
+        System.out.println("");
     }
 
    @Test(priority = 1,dataProviderClass = ReadPromoCode.class,dataProvider = "testdata")
