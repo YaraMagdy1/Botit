@@ -85,6 +85,5 @@ public class EW_12_ProductDetails extends BaseWebsite {
         Product_Details.ClickOnDownloadAppBtn();
         String URL4 = Download_Page.GetURL();
         SoftAssert.assertEquals(URL4, "https://apps.apple.com/us/app/botit/id1490081820", "The Actual URL to Download App is not Correct from (Offer section)" + URL4);
-
     }
 }
