@@ -9,7 +9,7 @@ import org.testng.annotations.*;
 import static com.mongodb.client.model.Filters.eq;
 
 public class BaseWebsite {
-    WebDriver driver;
+     WebDriver driver;
     public Common_Methods Common_Methods;
     public BotitWebsite.Featured_Categories Featured_Categories;
     public BotitWebsite.Popular_Product Popular_Product;
@@ -21,10 +21,11 @@ public class BaseWebsite {
     public BotitWebsite.Offers Offers;
     public BotitWebsite.Offers_Page Offers_Page;
     public BotitWebsite.Search_Bar Search_Bar;
-    @BeforeClass
+    public PageContactUs contactUs;
+    @BeforeMethod
     public void setUpSite() {
 
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\admin\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "D:\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.get("https://vendorbotit.com/botitwebsite/public/");
         driver.manage().window().maximize();
@@ -46,5 +47,12 @@ public class BaseWebsite {
         Offers_Page =new Offers_Page(driver);
         Search_Bar =new Search_Bar(driver);
         Shop_Sub_Category =new Shop_Sub_Category(driver);
+        contactUs = new PageContactUs(driver);
+        }
+
+        @AfterMethod
+    public void tearDown() throws InterruptedException {
+        Thread.sleep(2000);
+        driver.quit();
         }
 }
