@@ -43,7 +43,7 @@ public class EW_6_Search_Bar extends BaseWebsite {
         for (int i = 0; i < SearchForVendor.length; i++) {
             String VendorName = SearchForVendor[i][0];
             ArrayList<String> Output1 = Search_Bar.Search(VendorName);
-            SoftAssert.assertEquals(Output1.get(i), "", "The Vendor is not found in search result");
+            SoftAssert.assertEquals(Output1, "", "The Vendor is not found in search result");
             StepName = "Search for vendor";
             Common_Methods.Screenshot(StepName);
           //  System.out.println("The Count for searching about Item:" +VendorName +"is:" + Count_Vendor);
@@ -88,11 +88,13 @@ public class EW_6_Search_Bar extends BaseWebsite {
     }*/
 
 
-    //@Test(priority = 4)
+    @Test(priority = 4)
     //GC06 || SIT || Check if close button is shown and working when user wants to delete data from search bar
     //GC18 || SIT || Check if close button is shown and working in search result page
-    public void ClickOnThe_X_btn() throws IOException {
+    public void ClickOnThe_X_btn() throws IOException, InterruptedException {
+        Search_Bar.Search("yara");
 
+        Thread.sleep(2000);
         String ClickOnExitBtn = Search_Bar.ClickOnExitButton();
         SoftAssert SoftAssert = new SoftAssert();
         SoftAssert.assertEquals(ClickOnExitBtn, "true");
@@ -101,7 +103,7 @@ public class EW_6_Search_Bar extends BaseWebsite {
         SoftAssert.assertAll();
     }
 
-    //@Test(priority = 5)
+    @Test(priority = 5)
     //GC08 || SIT || Check searching with empty in search box at home page
     //GC13 || SIT || Check searching with empty text in search results page
     public void SearchForEmptyValue() {
@@ -112,7 +114,7 @@ public class EW_6_Search_Bar extends BaseWebsite {
         Search_Bar.GoBackToHomePage();
     }
 
-    //@Test(priority = 6)
+    @Test(priority = 6)
     //GC14 || SIT || Check "View Products" button in search results page
     public void ClickOnViewItemBtnForProduct() throws InterruptedException {
         SoftAssert SoftAssert = new SoftAssert();

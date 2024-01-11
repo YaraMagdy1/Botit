@@ -162,7 +162,7 @@ public class Recently_Added_Brands {
     }
     public Vendor_Details ClickOnViewProductButton() throws InterruptedException {
 
-        driver.findElement(By.xpath("/html/body/div[8]/div/div[2]/div/div/div[2]/div[2]/div[2]/a")).click();
+        driver.findElement(By.xpath("/html/body/div[8]/div/div[2]/div/div/div[1]/div[2]/div[2]/a")).click();
         return new Vendor_Details(driver);
     }
     public Featured_Brands ClickOnSeeMoreButton(){

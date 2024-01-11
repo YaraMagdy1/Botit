@@ -15,8 +15,8 @@ public class Vendor_Details {
     public String TitleOfVendor() throws InterruptedException {
         WebElement TitleElement = driver.findElement(By.xpath("/html/body/div[5]/div/div/div[1]/div[1]/h2"));
         VendorTitle =TitleElement.getText();
-        Thread.sleep(2800);
-        driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
+        //Thread.sleep(2800);
+        //driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
         return VendorTitle;
     }
     String ProductTitle;
@@ -45,4 +45,9 @@ public class Vendor_Details {
             String VendorName = VendorNameElement.getText();
             return VendorName;
     }*/
+    public Product_Details ClickOnViewItemBtn() throws InterruptedException {
+        driver.findElement(By.xpath("/html/body/div[5]/div/div/div[2]/div[3]/ul/li[1]/div[2]/div[2]/div[2]/a")).click();
+        Thread.sleep(3500);
+        return new Product_Details(driver);
+    }
 }

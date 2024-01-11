@@ -22,13 +22,10 @@ public class Common_Methods {
         this.driver=driver;
     }
     public void scrolling (String Element) throws InterruptedException {
-        //driver.manage().timeouts().implicitlyWait(12, TimeUnit.SECONDS);
-        // identify element
+
         WebElement FeaturedCateg =driver.findElement(By.xpath(Element));
-        // Javascript executor
         ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", FeaturedCateg);
-        Thread.sleep(1800);
-        //driver.quit();
+        Thread.sleep(2500);
     }
     public void DB_Connection(){
         MongoClient mongoClient = MongoClients.create("mongodb+srv://transmission_dev:K1IPfykYMq6FAUv6@botit-dev.jwtve.mongodb.net/botitdev?retryWrites=true&w=majority");
