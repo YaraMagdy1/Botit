@@ -408,13 +408,15 @@ public class Featured_Categories {
     // public BotitWebsite.Shop_Sub_Category Shop_Sub_Category;
     String CategName;
     public Shop_Sub_Category ClickOnCategory() throws InterruptedException {
-        for (int i = 1; i <= 2; i++) {
-            CategName= driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div[" + i + "]/a")).toString();
+        //for (int i = 1; i <= 2; i++) {
+        WebElement CategNameElement= driver.findElement(By.xpath("//*[@id=\"categories-cookies\"]/a/h2"));
+        CategName =CategNameElement.getText();
+        driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div[1]/a")).click();
 
-            driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div[" + i + "]/a")).click();
+            //driver.findElement(By.xpath("/html/body/div[6]/div/div[2]/div/div/div[" + i + "]/a")).click();
             Thread.sleep(1500);
-            driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
-        }
+           // driver.findElement(By.xpath("/html/body/div[4]/div/div[1]/div[2]/ul/li[1]/a/p")).click();
+       // }
         return new Shop_Sub_Category(driver);
     }
 }

@@ -1,10 +1,16 @@
 package BaseWebsite;
 import BotitWebsite.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.*;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.Duration;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -21,21 +27,21 @@ public class BaseWebsite {
     public BotitWebsite.Offers Offers;
     public BotitWebsite.Offers_Page Offers_Page;
     public BotitWebsite.Search_Bar Search_Bar;
+
     public PageContactUs contactUs;
     @BeforeMethod
     public void setUpSite() {
+
+    public BotitWebsite.Download_Page Download_Page;
+    @BeforeClass
+    public void setUpSite() throws IOException {
+
 
         System.setProperty("webdriver.chrome.driver", "D:\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.get("https://vendorbotit.com/botitwebsite/public/");
         driver.manage().window().maximize();
-  //      JavascriptExecutor executor = (JavascriptExecutor) driver;
-    //    executor.executeScript("window.scrollBy(0,2000)","");
-        //executor.executeScript("arguments[0].scrollIntoView(true);",executor);
-
-        //((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);", webElement);
-        //Scroll down till the bottom of the page
-//        executor.executeScript("window.scrollBy(1,document.body.scrollHeight)");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         Common_Methods=new Common_Methods(driver);
         Featured_Categories = new Featured_Categories(driver);
         Popular_Product = new Popular_Product(driver);
@@ -54,5 +60,9 @@ public class BaseWebsite {
     public void tearDown() throws InterruptedException {
         Thread.sleep(2000);
         driver.quit();
+
+        Download_Page = new Download_Page(driver);
+
         }
+
 }

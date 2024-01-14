@@ -108,36 +108,40 @@ ArrayList<String > Result_Items = new ArrayList<>();
     }
     public int CountForSearchProducts(){
         int counter = 1;
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1000));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("html/body/div[7]/div[1]/div/div/div[2]/ul")));
+        //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1000));
+       // wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("html/body/div[7]/div[1]/div/div/div[2]/ul")));
 
        // driver.findElement(By.xpath("/html/body/div[7]/div[2]/div/div/div/ul/li[7]/a")).click();
 
-        WebElement Items = driver.findElement(By.xpath("html/body/div[7]/div[1]/div/div/div[2]/ul"));
-        List<WebElement> list= Items.findElements(By.tagName("li"));
+try {
+    WebElement Items = driver.findElement(By.xpath("html/body/div[7]/div[1]/div/div/div[2]/ul"));
 
-        System.out.println(list);
-        int y =list.size();
-        for (int i=0 ; i<y ; i++){
-         //   String r = String.valueOf(list.get(i));
-            String m =list.get(i).getText().toString();
-            Result_Items.add(m);
-            boolean Displayed = driver.findElement(By.xpath("/html/body/div[7]/div[2]/div/div/div/ul/li[7]")).isDisplayed();
-            if(Displayed== true && i == 9){
-                driver.findElement(By.tagName("a[@title='next page']")).click();
-                //button.click
-                i=0;//html/body/div[7]/div[2]/div/div/div/ul/li[2]/a
-                WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(5000));
-                wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[7]/div[1]/div/div/div[2]/ul/li[1]")));
-                WebElement Items2 = driver.findElement(By.xpath("/html/body/div[7]/div[1]/div/div/div[2]/ul"));
-                List<WebElement> list2= Items2.findElements(By.tagName("li"));
-                list = list2;
-                y= list2.size();
-                continue;
-            }
+    List<WebElement> list = Items.findElements(By.tagName("li"));
+
+    //System.out.println(list);
+    int y = list.size();
+    for (int i = 0; i < y; i++) {
+        //   String r = String.valueOf(list.get(i));
+        String m = list.get(i).getText().toString();
+        Count_Of_Products.add(m);
+        //boolean Displayed = driver.findElement(By.xpath("/html/body/div[7]/div[2]/div/div/div/ul/li[7]")).isDisplayed();
+        //if(Displayed== true && i == 9){
+        //driver.findElement(By.tagName("a[@title='next page']")).click();
+        //button.click
+        i = 0;//html/body/div[7]/div[2]/div/div/div/ul/li[2]/a
+        WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(5000));
+        wait1.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[7]/div[1]/div/div/div[2]/ul/li[1]")));
+        //WebElement Items2 = driver.findElement(By.xpath("/html/body/div[7]/div[1]/div/div/div[2]/ul"));
+        //List<WebElement> list2= Items2.findElements(By.tagName("li"));
+        //list = list2;
+        //y= list2.size();
+        continue;
+    }
+}catch (Exception e){
+    return Count_Of_Products.size();
+}
            // String y =list.get(i).getText();
            // String u = null;
-        }
 
         /*boolean displayed = driver.findElement(By.xpath("/html/body/div[7]/div[2]/div/div/div/ul/li[7]")).isDisplayed();
         if(displayed){
@@ -162,11 +166,11 @@ ArrayList<String > Result_Items = new ArrayList<>();
     }
 
     public String ClickOnExitButton() throws IOException {
-        String Product_Name = "hi";
-        WebElement EnterValue = driver.findElement(By.xpath("/html/body/div[2]/div/form/div/input"));
-        EnterValue.sendKeys(Product_Name);
-        driver.findElement(By.xpath("/html/body/div[2]/div/form/div/label[1]/span")).click();
-        if (EnterValue.equals(null)){
+        driver.findElement(By.xpath("/html/body/div[5]/div/form/div/label[1]/span")).click();
+        WebElement EnterValueElement = driver.findElement(By.xpath("/html/body/div[5]/div/form/div/input"));
+        String EnterValue = EnterValueElement.getText();
+        //EnterValue.sendKeys(Product_Name);
+        if (EnterValue.equals("")) {
             return "true";
         } else {
             return "false";
@@ -189,8 +193,8 @@ ArrayList<String > Result_Items = new ArrayList<>();
         driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[1]/form/input")).sendKeys(Input);
         driver.findElement(By.xpath("/html/body/div[4]/div/div[2]/div[1]/form/button")).click();
 
-        //int Count_Products = CountForSearchProducts();
-        int Count_Products = CountProduct();
+        int Count_Products = CountForSearchProducts();
+        //int Count_Products = CountProduct();
         int Count_Vendors = CountForSearchVendors();
 
         //-----------Common search----------
@@ -243,7 +247,7 @@ ArrayList<String > Result_Items = new ArrayList<>();
             return Not_Found_Exist_Brand;
         }//---------Search For Not Found Item and Vendor--------------
         else if (Count_Products == 0 && Count_Vendors ==0) {
-            WebElement MessageElement = driver.findElement(By.xpath("/html/body/div[5]/div/div/p"));
+            WebElement MessageElement = driver.findElement(By.xpath("/html/body/div[8]/div/div/p"));
             String AlertMessage = MessageElement.getText();
             if(AlertMessage.equals("No result found")){
             UnExisted_Item_Brand.add(Input);
@@ -443,6 +447,7 @@ ArrayList<String > Result_Items = new ArrayList<>();
     }*/
     ArrayList<String> UnExisted_Item_Brand = new ArrayList<>();
     ArrayList<String> Find_UnExisted_Item_Brand = new ArrayList<>();
+
     public int CountForSearchVendors() {
         int counter = 1;
         for (int i = 1; i <= counter; i++) {
@@ -458,6 +463,7 @@ ArrayList<String > Result_Items = new ArrayList<>();
                     counter += 1;
                 }
             } catch (Exception e) {
+                //return Count_Of_Vendors.size();
                 System.out.println(e);
             }
         }
