@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
+
 
 public class EW_1_FeaturedCatgories extends BaseWebsite {
     static int c = 1;
